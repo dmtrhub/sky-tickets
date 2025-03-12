@@ -21,3 +21,15 @@ public enum ReviewStatus
     Approved,
     Rejected
 }
+
+public enum UserRole
+{
+    Passenger,
+    Administrator
+}
+
+public enum Gender
+{
+    Male,
+    Female
+}

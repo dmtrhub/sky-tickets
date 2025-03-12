@@ -4959,7 +4959,6 @@
   },
   "projectFileDependencyGroups": {
     "net9.0": [
-      "Application >= 1.0.0",
       "Infrastructure >= 1.0.0",
       "Microsoft.AspNetCore.OpenApi >= 9.0.1",
       "Microsoft.EntityFrameworkCore.Design >= 9.0.3",
@@ -4998,9 +4997,6 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "G:\\PORTFOLIO\\SkyTickets\\src\\Application\\Application.csproj": {
-              "projectPath": "G:\\PORTFOLIO\\SkyTickets\\src\\Application\\Application.csproj"
-            },
             "G:\\PORTFOLIO\\SkyTickets\\src\\Infrastructure\\Infrastructure.csproj": {
               "projectPath": "G:\\PORTFOLIO\\SkyTickets\\src\\Infrastructure\\Infrastructure.csproj"
             }

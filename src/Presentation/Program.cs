@@ -1,5 +1,4 @@
-using Infrastructure.Database;
-using Microsoft.EntityFrameworkCore;
+using Infrastructure;
 using Scalar.AspNetCore;
 using System.Text.Json.Serialization;
 
@@ -13,8 +12,8 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
+builder.Services
+    .AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 

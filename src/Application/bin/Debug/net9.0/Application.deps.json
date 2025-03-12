@@ -12,7 +12,7 @@
           "FluentValidation.DependencyInjectionExtensions": "11.11.0",
           "MediatR": "12.4.1",
           "Microsoft.EntityFrameworkCore": "9.0.3",
-          "Microsoft.EntityFrameworkCore.Design": "9.0.3",
+          "Microsoft.EntityFrameworkCore.Tools": "9.0.3",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.3"
         },
         "runtime": {
@@ -423,6 +423,11 @@
           }
         }
       },
+      "Microsoft.EntityFrameworkCore.Tools/9.0.3": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Design": "9.0.3"
+        }
+      },
       "Microsoft.Extensions.Caching.Abstractions/9.0.3": {
         "dependencies": {
           "Microsoft.Extensions.Primitives": "9.0.3"
@@ -775,6 +780,13 @@
       "sha512": "sha512-xsS+5TM7M5f3tCSRaSbzouGCoIgD2zokQxBGXvf9z3DusRztWvT1NNT9XJaY2JoK1qEEDcHah8is6azYmpZhIg==",
       "path": "microsoft.entityframeworkcore.relational/9.0.3",
       "hashPath": "microsoft.entityframeworkcore.relational.9.0.3.nupkg.sha512"
+    },
+    "Microsoft.EntityFrameworkCore.Tools/9.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-c2kkyHhkop9WAbBWgm64apzPbzMeu0iKsRW3cn5kxSge0SQNxSlkAOtnO4L9dc8YwCAtFFyAZrxVFekxyvxKwQ==",
+      "path": "microsoft.entityframeworkcore.tools/9.0.3",
+      "hashPath": "microsoft.entityframeworkcore.tools.9.0.3.nupkg.sha512"
     },
     "Microsoft.Extensions.Caching.Abstractions/9.0.3": {
       "type": "package",

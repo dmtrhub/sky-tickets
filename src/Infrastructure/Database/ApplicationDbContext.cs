@@ -15,14 +15,6 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Flight>()
-                .Property(f => f.Price)
-                .HasPrecision(18, 2);
-
-        modelBuilder.Entity<Reservation>()
-                    .Property(r => r.TotalPrice)
-                    .HasPrecision(18, 2);
-
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
 

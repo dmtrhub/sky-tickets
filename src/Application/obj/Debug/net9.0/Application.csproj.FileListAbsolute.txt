@@ -1,4 +1,5 @@
 G:\PORTFOLIO\SkyTickets\src\Application\bin\Debug\net9.0\Application.deps.json
+G:\PORTFOLIO\SkyTickets\src\Application\bin\Debug\net9.0\Application.runtimeconfig.json
 G:\PORTFOLIO\SkyTickets\src\Application\bin\Debug\net9.0\Application.dll
 G:\PORTFOLIO\SkyTickets\src\Application\bin\Debug\net9.0\Application.pdb
 G:\PORTFOLIO\SkyTickets\src\Application\bin\Debug\net9.0\Domain.dll
@@ -13,6 +14,5 @@ G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\Applicat.44B5EDA2.Up2Da
 G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\Application.dll
 G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\refint\Application.dll
 G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\Application.pdb
-G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\ref\Application.dll
-G:\PORTFOLIO\SkyTickets\src\Application\bin\Debug\net9.0\Application.runtimeconfig.json
 G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\Application.genruntimeconfig.cache
+G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\ref\Application.dll
