@@ -1,0 +1,16 @@
+G:\PORTFOLIO\SkyTickets\src\Application\bin\Debug\net9.0\Application.deps.json
+G:\PORTFOLIO\SkyTickets\src\Application\bin\Debug\net9.0\Application.dll
+G:\PORTFOLIO\SkyTickets\src\Application\bin\Debug\net9.0\Application.pdb
+G:\PORTFOLIO\SkyTickets\src\Application\bin\Debug\net9.0\Domain.dll
+G:\PORTFOLIO\SkyTickets\src\Application\bin\Debug\net9.0\Domain.pdb
+G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\Application.csproj.AssemblyReference.cache
+G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\Application.GeneratedMSBuildEditorConfig.editorconfig
+G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\Application.AssemblyInfoInputs.cache
+G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\Application.AssemblyInfo.cs
+G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\Application.csproj.CoreCompileInputs.cache
+G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\Application.sourcelink.json
+G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\Applicat.44B5EDA2.Up2Date
+G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\Application.dll
+G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\refint\Application.dll
+G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\Application.pdb
+G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\ref\Application.dll
