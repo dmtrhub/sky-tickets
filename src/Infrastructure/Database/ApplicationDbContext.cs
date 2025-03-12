@@ -15,9 +15,15 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        modelBuilder.Entity<Flight>()
+                .Property(f => f.Price)
+                .HasPrecision(18, 2);
 
-        modelBuilder.HasDefaultSchema(Schemas.Default);
+        modelBuilder.Entity<Reservation>()
+                    .Property(r => r.TotalPrice)
+                    .HasPrecision(18, 2);
+
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
