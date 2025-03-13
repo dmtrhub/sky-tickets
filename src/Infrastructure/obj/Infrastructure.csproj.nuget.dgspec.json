@@ -127,7 +127,11 @@
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "G:\\PORTFOLIO\\SkyTickets\\src\\SharedKernel\\SharedKernel.csproj": {
+                "projectPath": "G:\\PORTFOLIO\\SkyTickets\\src\\SharedKernel\\SharedKernel.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
