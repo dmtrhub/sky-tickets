@@ -1700,7 +1700,8 @@
           "FluentValidation.DependencyInjectionExtensions": "11.11.0",
           "MediatR": "12.4.1",
           "Microsoft.EntityFrameworkCore": "9.0.3",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.3"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.3",
+          "SharedKernel": "1.0.0"
         },
         "compile": {
           "bin/placeholder/Application.dll": {}
@@ -1733,6 +1734,16 @@
         },
         "runtime": {
           "bin/placeholder/Infrastructure.dll": {}
+        }
+      },
+      "SharedKernel/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/SharedKernel.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SharedKernel.dll": {}
         }
       }
     }
@@ -4740,6 +4751,11 @@
       "type": "project",
       "path": "../Infrastructure/Infrastructure.csproj",
       "msbuildProject": "../Infrastructure/Infrastructure.csproj"
+    },
+    "SharedKernel/1.0.0": {
+      "type": "project",
+      "path": "../SharedKernel/SharedKernel.csproj",
+      "msbuildProject": "../SharedKernel/SharedKernel.csproj"
     }
   },
   "projectFileDependencyGroups": {
