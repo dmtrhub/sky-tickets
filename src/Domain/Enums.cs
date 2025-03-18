@@ -31,5 +31,5 @@ public enum UserRole
 public enum Gender
 {
     Male,
-    Female
+    Female 
 }

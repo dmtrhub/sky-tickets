@@ -175,3 +175,7 @@ G:\PORTFOLIO\SkyTickets\src\Presentation\bin\Debug\net9.0\ru\Microsoft.CodeAnaly
 G:\PORTFOLIO\SkyTickets\src\Presentation\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 G:\PORTFOLIO\SkyTickets\src\Presentation\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 G:\PORTFOLIO\SkyTickets\src\Presentation\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+G:\PORTFOLIO\SkyTickets\src\Presentation\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+G:\PORTFOLIO\SkyTickets\src\Presentation\bin\Debug\net9.0\SharedKernel.dll
+G:\PORTFOLIO\SkyTickets\src\Presentation\bin\Debug\net9.0\SharedKernel.pdb
+G:\PORTFOLIO\SkyTickets\src\Presentation\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

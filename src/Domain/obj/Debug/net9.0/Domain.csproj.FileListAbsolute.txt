@@ -10,3 +10,7 @@ G:\PORTFOLIO\SkyTickets\src\Domain\obj\Debug\net9.0\Domain.dll
 G:\PORTFOLIO\SkyTickets\src\Domain\obj\Debug\net9.0\refint\Domain.dll
 G:\PORTFOLIO\SkyTickets\src\Domain\obj\Debug\net9.0\Domain.pdb
 G:\PORTFOLIO\SkyTickets\src\Domain\obj\Debug\net9.0\ref\Domain.dll
+G:\PORTFOLIO\SkyTickets\src\Domain\bin\Debug\net9.0\SharedKernel.dll
+G:\PORTFOLIO\SkyTickets\src\Domain\bin\Debug\net9.0\SharedKernel.pdb
+G:\PORTFOLIO\SkyTickets\src\Domain\obj\Debug\net9.0\Domain.csproj.AssemblyReference.cache
+G:\PORTFOLIO\SkyTickets\src\Domain\obj\Debug\net9.0\Domain.csproj.Up2Date

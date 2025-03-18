@@ -16,3 +16,5 @@ G:\PORTFOLIO\SkyTickets\src\Infrastructure\obj\Debug\net9.0\Infrastructure.dll
 G:\PORTFOLIO\SkyTickets\src\Infrastructure\obj\Debug\net9.0\refint\Infrastructure.dll
 G:\PORTFOLIO\SkyTickets\src\Infrastructure\obj\Debug\net9.0\Infrastructure.pdb
 G:\PORTFOLIO\SkyTickets\src\Infrastructure\obj\Debug\net9.0\ref\Infrastructure.dll
+G:\PORTFOLIO\SkyTickets\src\Infrastructure\bin\Debug\net9.0\SharedKernel.dll
+G:\PORTFOLIO\SkyTickets\src\Infrastructure\bin\Debug\net9.0\SharedKernel.pdb

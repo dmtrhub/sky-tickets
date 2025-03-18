@@ -1,0 +1,12 @@
+G:\PORTFOLIO\SkyTickets\src\SharedKernel\bin\Debug\net9.0\SharedKernel.deps.json
+G:\PORTFOLIO\SkyTickets\src\SharedKernel\bin\Debug\net9.0\SharedKernel.dll
+G:\PORTFOLIO\SkyTickets\src\SharedKernel\bin\Debug\net9.0\SharedKernel.pdb
+G:\PORTFOLIO\SkyTickets\src\SharedKernel\obj\Debug\net9.0\SharedKernel.GeneratedMSBuildEditorConfig.editorconfig
+G:\PORTFOLIO\SkyTickets\src\SharedKernel\obj\Debug\net9.0\SharedKernel.AssemblyInfoInputs.cache
+G:\PORTFOLIO\SkyTickets\src\SharedKernel\obj\Debug\net9.0\SharedKernel.AssemblyInfo.cs
+G:\PORTFOLIO\SkyTickets\src\SharedKernel\obj\Debug\net9.0\SharedKernel.csproj.CoreCompileInputs.cache
+G:\PORTFOLIO\SkyTickets\src\SharedKernel\obj\Debug\net9.0\SharedKernel.sourcelink.json
+G:\PORTFOLIO\SkyTickets\src\SharedKernel\obj\Debug\net9.0\SharedKernel.dll
+G:\PORTFOLIO\SkyTickets\src\SharedKernel\obj\Debug\net9.0\refint\SharedKernel.dll
+G:\PORTFOLIO\SkyTickets\src\SharedKernel\obj\Debug\net9.0\SharedKernel.pdb
+G:\PORTFOLIO\SkyTickets\src\SharedKernel\obj\Debug\net9.0\ref\SharedKernel.dll

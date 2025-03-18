@@ -12,6 +12,9 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasIndex(u => u.Email).IsUnique();
 
+        builder.Property(u => u.DateOfBirth)
+            .HasColumnType("date");
+
         builder.Property(u => u.Role)
             .HasConversion<string>();
 

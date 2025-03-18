@@ -16,3 +16,5 @@ G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\refint\Application.dll
 G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\Application.pdb
 G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\Application.genruntimeconfig.cache
 G:\PORTFOLIO\SkyTickets\src\Application\obj\Debug\net9.0\ref\Application.dll
+G:\PORTFOLIO\SkyTickets\src\Application\bin\Debug\net9.0\SharedKernel.dll
+G:\PORTFOLIO\SkyTickets\src\Application\bin\Debug\net9.0\SharedKernel.pdb
