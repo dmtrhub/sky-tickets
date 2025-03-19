@@ -15,10 +15,8 @@ internal sealed class Register : IEndpoint
         string LastName,
         string Email,
         string Password,
-        [property: JsonConverter(typeof(DateOnlyJsonConverter))]
-        DateTime DateOfBirth,
-        [property: JsonConverter(typeof(JsonStringEnumConverter))]
-        Gender Gender);
+        string DateOfBirth,
+        string Gender);
 
     public void MapEndpoint(IEndpointRouteBuilder app)
     {

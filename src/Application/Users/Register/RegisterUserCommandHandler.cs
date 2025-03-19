@@ -2,8 +2,10 @@
 using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
 using Domain;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
+using System.Globalization;
 
 namespace Application.Users.Register;
 
@@ -23,8 +25,8 @@ public class RegisterUserCommandHandler(
             LastName = command.LastName,
             Email = command.Email,
             PasswordHash = passwordHasher.Hash(command.Password),
-            DateOfBirth = command.DateOfBirth,
-            Gender = command.Gender,
+            DateOfBirth = DateOnly.ParseExact(command.DateOfBirth, "yyyy-MM-dd", CultureInfo.InvariantCulture),
+            Gender = Enum.Parse<Gender>(command.Gender, true),
             Role = UserRole.Passenger,
             Reservations = [],
             Reviews = []

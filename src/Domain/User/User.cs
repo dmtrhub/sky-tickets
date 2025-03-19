@@ -7,7 +7,7 @@ public sealed class User
     public string LastName { get; set; }
     public string Email { get; set; }
     public string PasswordHash { get; set; }
-    public DateTime DateOfBirth { get; set; }
+    public DateOnly DateOfBirth { get; set; }
     public Gender Gender { get; set; } // Male or Female
     public UserRole Role { get; set; } = UserRole.Passenger; // Passenger or Administrator
     public List<Reservation> Reservations { get; set; } = [];

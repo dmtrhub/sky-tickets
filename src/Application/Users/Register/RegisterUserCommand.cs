@@ -8,6 +8,6 @@ public sealed record RegisterUserCommand(
     string LastName,
     string Email,
     string Password,
-    DateTime DateOfBirth,
-    Gender Gender
+    string DateOfBirth,
+    string Gender
 ) : ICommand<Guid>;
