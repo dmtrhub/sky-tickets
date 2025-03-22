@@ -1,34 +1,35 @@
-﻿using Application.Users.Register;
-using Domain;
+﻿using Application.Users.Update;
 using MediatR;
 using Presentation.Extensions;
 using Presentation.Infrastructure;
 using SharedKernel;
-using System.Text.Json.Serialization;
 
 namespace Presentation.Endpoints.Users;
 
-public sealed class Register : IEndpoint
+public sealed class Update : IEndpoint
 {
-    public sealed record RegisterRequest(
+    public sealed record UpdateRequest(
         string FirstName,
         string LastName,
         string Email,
         string Password,
         string DateOfBirth,
-        string Gender);
+        string Gender,
+        string Role);
 
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("users/register", async (RegisterRequest request, ISender sender, CancellationToken cancellationToken) =>
+        app.MapPut("/users/{id}", async (Guid id, UpdateRequest request, ISender sender, CancellationToken cancellationToken) =>
         {
-            var command = new RegisterUserCommand(
+            var command = new UpdateUserCommand(
+                id,
                 request.FirstName,
                 request.LastName,
                 request.Email,
                 request.Password,
                 request.DateOfBirth,
-                request.Gender);
+                request.Gender,
+                request.Role);
 
             Result<Guid> result = await sender.Send(command, cancellationToken);
 

@@ -2,7 +2,6 @@
 using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
 using Domain;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 using System.Globalization;
