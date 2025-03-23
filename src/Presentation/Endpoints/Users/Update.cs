@@ -8,7 +8,7 @@ namespace Presentation.Endpoints.Users;
 
 public sealed class Update : IEndpoint
 {
-    public sealed record UpdateRequest(
+    public sealed record UpdateUserRequest(
         string FirstName,
         string LastName,
         string Email,
@@ -19,7 +19,7 @@ public sealed class Update : IEndpoint
 
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("/users/{id}", async (Guid id, UpdateRequest request, ISender sender, CancellationToken cancellationToken) =>
+        app.MapPut("/users/{id}", async (Guid id, UpdateUserRequest request, ISender sender, CancellationToken cancellationToken) =>
         {
             var command = new UpdateUserCommand(
                 id,

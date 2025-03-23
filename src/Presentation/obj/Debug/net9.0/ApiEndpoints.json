@@ -1,5 +1,74 @@
 [
   {
+    "ContainingType": "Presentation.Endpoints.Airlines.Create\u002B\u003C\u003Ec",
+    "Method": "\u003CMapEndpoint\u003Eb__1_0",
+    "RelativePath": "airlines",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Presentation.Endpoints.Airlines.Create\u002BCreateAirlineRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "Airlines"
+    ]
+  },
+  {
+    "ContainingType": "Presentation.Endpoints.Airlines.GetAll\u002B\u003C\u003Ec",
+    "Method": "\u003CMapEndpoint\u003Eb__0_0",
+    "RelativePath": "airlines",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "Airlines"
+    ]
+  },
+  {
+    "ContainingType": "Presentation.Endpoints.Airlines.GetById\u002B\u003C\u003Ec",
+    "Method": "\u003CMapEndpoint\u003Eb__0_0",
+    "RelativePath": "airlines/{id}",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "Airlines"
+    ]
+  },
+  {
     "ContainingType": "Presentation.Endpoints.Users.GetAll\u002B\u003C\u003Ec",
     "Method": "\u003CMapEndpoint\u003Eb__0_0",
     "RelativePath": "users",
@@ -58,7 +127,7 @@
       },
       {
         "Name": "request",
-        "Type": "Presentation.Endpoints.Users.Update\u002BUpdateRequest",
+        "Type": "Presentation.Endpoints.Users.Update\u002BUpdateUserRequest",
         "IsRequired": true
       }
     ],

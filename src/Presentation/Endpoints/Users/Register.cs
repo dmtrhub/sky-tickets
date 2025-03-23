@@ -1,10 +1,8 @@
 ﻿using Application.Users.Register;
-using Domain;
 using MediatR;
 using Presentation.Extensions;
 using Presentation.Infrastructure;
 using SharedKernel;
-using System.Text.Json.Serialization;
 
 namespace Presentation.Endpoints.Users;
 

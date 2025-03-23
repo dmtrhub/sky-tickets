@@ -5,5 +5,11 @@ namespace Domain;
 public static class AirlineErrors
 {
     public static Error NotFound(Guid airlineId) =>
-        Error.NotFound("Airline.NotFound", $"Airline with id {airlineId} was not found");  
+        Error.NotFound("Airlines.NotFound", $"Airline with id {airlineId} was not found");
+
+    public static readonly Error NoAirlinesFound =
+        Error.NotFound("Airlines.NoAirlineFound", "No airlines found in the system");
+
+    public static Error NameInUse(string name) =>
+        Error.Conflict("Airlines.NameInUse", $"The name '{name}' is already in use");
 }
