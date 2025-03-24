@@ -1,5 +1,4 @@
-﻿using Application.Airlines;
-using Application.Airlines.GetById;
+﻿using Application.Airlines.Delete;
 using Infrastructure.Authorization;
 using MediatR;
 using Presentation.Extensions;
@@ -8,15 +7,15 @@ using SharedKernel;
 
 namespace Presentation.Endpoints.Airlines;
 
-public sealed class GetById : IEndpoint
+public sealed class Delete : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/airlines/{id}", async (Guid id, ISender sender, CancellationToken cancellationToken) =>
+        app.MapDelete("/airlines/{id}", async (Guid id, ISender sender, CancellationToken cancellationToken) =>
         {
-            var query = new GetAirlineByIdQuery(id);
+            var command = new DeleteAirlineCommand(id);
 
-            Result<AirlineResponse> result = await sender.Send(query, cancellationToken);
+            Result<Guid> result = await sender.Send(command, cancellationToken);
 
             return result.Match(Results.Ok, CustomResults.Problem);
         })

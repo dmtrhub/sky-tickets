@@ -1,5 +1,6 @@
 ﻿using Application.Airlines;
 using Application.Airlines.GetAll;
+using Infrastructure.Authorization;
 using MediatR;
 using Presentation.Extensions;
 using Presentation.Infrastructure;
@@ -19,6 +20,7 @@ public sealed class GetAll : IEndpoint
 
             return result.Match(Results.Ok, CustomResults.Problem);
         })
-        .WithTags(Tags.Airlines);
+        .WithTags(Tags.Airlines)
+        .RequireAuthorization(AuthorizationPolicies.AdministratorPolicy);
     }
 }

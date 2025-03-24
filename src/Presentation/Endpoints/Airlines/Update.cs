@@ -1,4 +1,4 @@
-﻿using Application.Airlines.Create;
+﻿using Application.Airlines.Update;
 using Infrastructure.Authorization;
 using MediatR;
 using Presentation.Extensions;
@@ -7,22 +7,22 @@ using SharedKernel;
 
 namespace Presentation.Endpoints.Airlines;
 
-public class Create : IEndpoint
+public sealed class Update : IEndpoint
 {
-    public sealed record CreateAirlineRequest(
+    public sealed record UpdateAirlineRequest(
         string Name,
         string Address,
         string ContactInfo);
 
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/airlines", async (CreateAirlineRequest request, ISender sender, CancellationToken cancellationToken) =>
+        app.MapPut("/airlines/{id}", async (Guid id, UpdateAirlineRequest request, ISender sender, CancellationToken cancellationToken) =>
         {
-            var command = new CreateAirlineCommand(request.Name, request.Address, request.ContactInfo);
+            var command = new UpdateAirlineCommand(id, request.Name, request.Address, request.ContactInfo);
 
             Result<Guid> result = await sender.Send(command, cancellationToken);
 
-            return result.Match(Results.Created, CustomResults.Problem);
+            return result.Match(Results.Ok, CustomResults.Problem);
         })
         .WithTags(Tags.Airlines)
         .RequireAuthorization(AuthorizationPolicies.AdministratorPolicy);

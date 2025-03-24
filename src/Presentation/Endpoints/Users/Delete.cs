@@ -18,7 +18,7 @@ public sealed class Delete : IEndpoint
             Result<Guid> result = await sender.Send(command, cancellationToken);
             return result.Match(Results.Ok, CustomResults.Problem);
         })
-        .RequireAuthorization(AuthorizationPolicies.PassengerPolicy)
+        .RequireAuthorization(AuthorizationPolicies.AdministratorPolicy)
         .WithTags(Tags.Users);
     }
 }
