@@ -11,16 +11,7 @@ public sealed class GetUserByEmailQueryHandler(IApplicationDbContext context) : 
     public async Task<Result<UserResponse>> Handle(GetUserByEmailQuery query, CancellationToken cancellationToken)
     {
         var user = await context.Users.Where(u => u.Email == query.Email)
-            .Select(u => new UserResponse
-            {
-                Id = u.Id,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                Email = u.Email,
-                DateOfBirth = u.DateOfBirth,
-                Gender = u.Gender.ToString(),
-                Role = u.Role.ToString()
-            })
+            .Select(u => u.ToUserResponse())
             .SingleOrDefaultAsync(cancellationToken);
 
         if(user is null)

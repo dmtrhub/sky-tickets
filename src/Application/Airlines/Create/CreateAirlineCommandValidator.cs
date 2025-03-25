@@ -1,5 +1,4 @@
-﻿using Application.Airlines.Update;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace Application.Airlines.Create;
 

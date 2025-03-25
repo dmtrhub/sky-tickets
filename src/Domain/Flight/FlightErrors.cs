@@ -15,4 +15,7 @@ public static class FlightErrors
 
     public static Error NotCompleted(Guid airlineId) =>
         Error.Problem("Flight.NotCompleted", $"Flight with id {airlineId} was not completed");
+
+    public static readonly Error NoFlightsFound =
+        Error.NotFound("Flight.NoFlightFound", $"No flights found in the system");
 }

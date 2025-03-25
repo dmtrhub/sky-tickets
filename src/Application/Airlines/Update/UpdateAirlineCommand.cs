@@ -4,6 +4,6 @@ namespace Application.Airlines.Update;
 
 public sealed record UpdateAirlineCommand(
     Guid Id,
-    string Name,
-    string Address,
-    string ContactInfo) : ICommand<Guid>;
+    string? Name,
+    string? Address,
+    string? ContactInfo) : ICommand<Guid>;

@@ -13,13 +13,7 @@ public sealed class GetAirlineByIdQueryHandler(IApplicationDbContext context)
     {
         var airline = await context.Airlines
             .Where(a => a.Id == query.Id)
-            .Select(a => new AirlineResponse
-            {
-                Id = a.Id,
-                Name = a.Name,
-                Address = a.Address,
-                ContactInfo = a.ContactInfo
-            })
+            .Select(a => a.ToAirlineResponse())
             .SingleOrDefaultAsync(cancellationToken);
 
         if (airline is null)

@@ -11,16 +11,7 @@ public sealed class GetAllUsersQueryHandler(IApplicationDbContext context) : IQu
     public async Task<Result<List<UserResponse>>> Handle(GetAllUsersQuery query, CancellationToken cancellationToken)
     {
         var users = await context.Users
-            .Select(u => new UserResponse
-            {
-                Id = u.Id,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                Email = u.Email,
-                DateOfBirth = u.DateOfBirth,
-                Gender = u.Gender.ToString(),
-                Role = u.Role.ToString()
-            })
+            .Select(u => u.ToUserResponse())
             .ToListAsync(cancellationToken);
 
         if (users is null)

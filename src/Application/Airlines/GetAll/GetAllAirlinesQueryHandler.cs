@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
+using Application.Flights;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
@@ -12,13 +13,8 @@ public sealed class GetAllAirlinesQueryHandler(IApplicationDbContext context)
     public async Task<Result<List<AirlineResponse>>> Handle(GetAllAirlinesQuery query, CancellationToken cancellationToken)
     {
         var airlines = await context.Airlines
-            .Select(a => new AirlineResponse
-            {
-                Id = a.Id,
-                Name = a.Name,
-                Address = a.Address,
-                ContactInfo = a.ContactInfo
-            })
+            .Include(a => a.Flights)
+            .Select(a => a.ToAirlineResponse())
             .ToListAsync(cancellationToken);
 
         if (airlines is null)

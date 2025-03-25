@@ -14,16 +14,7 @@ public sealed class GetUserByIdQueryHandler(
     {
         var user = await context.Users
             .Where(u => u.Id == query.UserId)
-            .Select(u => new UserResponse
-            {
-                Id = u.Id,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                Email = u.Email,
-                DateOfBirth = u.DateOfBirth,
-                Gender = u.Gender.ToString(),
-                Role = u.Role.ToString()
-            })
+            .Select(u => u.ToUserResponse())
             .SingleOrDefaultAsync(cancellationToken);
 
         if(user is null)

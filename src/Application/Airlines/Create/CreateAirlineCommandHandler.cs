@@ -14,17 +14,9 @@ public sealed class CreateAirlineCommandHandler(IApplicationDbContext context)
         if (await context.Airlines.AnyAsync(a => a.Name == command.Name, cancellationToken))
             return Result.Failure<Guid>(AirlineErrors.NameInUse(command.Name));
 
-        var airline = new Airline
-        {
-            Id = Guid.NewGuid(),
-            Name = command.Name,
-            Address = command.Address,
-            ContactInfo = command.ContactInfo,
-            Flights = [],
-            Reviews = []
-        };
+        var airline = command.ToAirline();
 
-        context.Airlines.Add(airline);
+        await context.Airlines.AddAsync(airline, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
 
         return airline.Id;

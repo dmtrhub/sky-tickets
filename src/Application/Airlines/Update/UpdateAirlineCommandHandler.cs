@@ -17,16 +17,9 @@ public sealed class UpdateAirlineCommandHandler(IApplicationDbContext context)
             return Result.Failure<Guid>(AirlineErrors.NotFound(command.Id));
 
         if (await context.Airlines.AnyAsync(a => a.Name == command.Name && a.Id != command.Id, cancellationToken))
-            return Result.Failure<Guid>(AirlineErrors.NameInUse(command.Name));
+            return Result.Failure<Guid>(AirlineErrors.NameInUse(command.Name!));
 
-        if (!string.IsNullOrWhiteSpace(command.Name))
-            airline.Name = command.Name;
-
-        if (!string.IsNullOrWhiteSpace(command.Address))
-            airline.Address = command.Address;
-
-        if (!string.IsNullOrWhiteSpace(command.ContactInfo))
-            airline.ContactInfo = command.ContactInfo;
+        airline.UpdateAirline(command);
 
         await context.SaveChangesAsync(cancellationToken);
 

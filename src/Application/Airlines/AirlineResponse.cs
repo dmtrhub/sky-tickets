@@ -1,4 +1,6 @@
-﻿namespace Application.Airlines;
+﻿using Application.Flights;
+
+namespace Application.Airlines;
 
 public sealed record AirlineResponse
 {
@@ -6,4 +8,6 @@ public sealed record AirlineResponse
     public string Name { get; init; }
     public string Address { get; init; }
     public string ContactInfo { get; init; }
+    public List<FlightResponse> Flights { get; init; }
+    //public List<FlightResponse> Reviews { get; init; } 
 }
