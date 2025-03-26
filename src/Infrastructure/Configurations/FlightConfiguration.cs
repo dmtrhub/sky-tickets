@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Domain.Flights;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "UBbERute62M=",
+  "dgSpecHash": "bGHf5drfVEE=",
   "success": true,
   "projectFilePath": "G:\\PORTFOLIO\\SkyTickets\\src\\SharedKernel\\SharedKernel.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Dimitrije\\.nuget\\packages\\mediatr\\12.4.1\\mediatr.12.4.1.nupkg.sha512",
+    "C:\\Users\\Dimitrije\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
+    "C:\\Users\\Dimitrije\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
+  ],
   "logs": []
 }

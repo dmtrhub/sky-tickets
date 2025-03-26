@@ -2,6 +2,7 @@
 using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
 using Domain;
+using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
@@ -22,6 +23,8 @@ public sealed class UpdateUserCommandHandler(
             return Result.Failure<Guid>(UserErrors.EmailInUse(command.Email!));
 
         user.UpdateUser(command, passwordHasher);
+
+        user.Raise(new UserUpdatedDomainEvent(user.Id));
 
         await context.SaveChangesAsync(cancellationToken);
 

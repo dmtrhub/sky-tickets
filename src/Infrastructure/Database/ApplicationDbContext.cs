@@ -1,10 +1,18 @@
 ﻿using Application.Abstractions.Data;
-using Domain;
+using Domain.Airlines;
+using Domain.Flights;
+using Domain.Reservations;
+using Domain.Reviews;
+using Domain.Users;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel;
 
 namespace Infrastructure.Database;
 
-public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+public sealed class ApplicationDbContext(
+    DbContextOptions<ApplicationDbContext> options,
+    IMediator mediator)
     : DbContext(options), IApplicationDbContext
 {
     public DbSet<User> Users { get; set; }
@@ -20,7 +28,22 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        int result = await base.SaveChangesAsync(cancellationToken);
+        var domainEntities = ChangeTracker.Entries<Entity>()
+        .Where(x => x.Entity.DomainEvents.Count != 0)
+        .ToList();
+
+        var domainEvents = domainEntities
+            .SelectMany(x => x.Entity.DomainEvents)
+            .ToList();
+
+        domainEntities.ForEach(entity => entity.Entity.ClearDomainEvents());
+
+        var result = await base.SaveChangesAsync(cancellationToken);
+
+        foreach (var domainEvent in domainEvents)
+        {
+            await mediator.Publish(domainEvent, cancellationToken);
+        }
 
         return result;
     }

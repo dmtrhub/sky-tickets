@@ -2,6 +2,7 @@
 using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
 using Domain;
+using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
@@ -18,7 +19,9 @@ public class RegisterUserCommandHandler(
 
         var user = command.ToUser(passwordHasher);
 
-        context.Users.Add(user);
+        user.Raise(new UserRegisteredDomainEvent(user.Id));
+
+        await context.Users.AddAsync(user, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
 
         return user.Id;

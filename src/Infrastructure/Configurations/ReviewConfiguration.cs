@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Domain.Reviews;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

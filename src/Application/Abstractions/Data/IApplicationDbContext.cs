@@ -1,4 +1,8 @@
-﻿using Domain;
+﻿using Domain.Airlines;
+using Domain.Flights;
+using Domain.Reservations;
+using Domain.Reviews;
+using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Abstractions.Data;

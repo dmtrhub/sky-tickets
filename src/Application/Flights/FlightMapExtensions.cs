@@ -1,6 +1,7 @@
 ﻿using Application.Flights.Create;
 using Application.Flights.Update;
 using Domain;
+using Domain.Flights;
 using System.Globalization;
 
 namespace Application.Flights;

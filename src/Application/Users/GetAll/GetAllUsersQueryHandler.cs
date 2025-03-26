@@ -6,7 +6,8 @@ using SharedKernel;
 
 namespace Application.Users.GetAll;
 
-public sealed class GetAllUsersQueryHandler(IApplicationDbContext context) : IQueryHandler<GetAllUsersQuery, List<UserResponse>>
+public sealed class GetAllUsersQueryHandler(IApplicationDbContext context) 
+    : IQueryHandler<GetAllUsersQuery, List<UserResponse>>
 {
     public async Task<Result<List<UserResponse>>> Handle(GetAllUsersQuery query, CancellationToken cancellationToken)
     {

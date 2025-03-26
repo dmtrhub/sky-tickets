@@ -6,11 +6,13 @@ using SharedKernel;
 
 namespace Application.Users.GetByEmail;
 
-public sealed class GetUserByEmailQueryHandler(IApplicationDbContext context) : IQueryHandler<GetUserByEmailQuery, UserResponse>
+public sealed class GetUserByEmailQueryHandler(IApplicationDbContext context) 
+    : IQueryHandler<GetUserByEmailQuery, UserResponse>
 {
     public async Task<Result<UserResponse>> Handle(GetUserByEmailQuery query, CancellationToken cancellationToken)
     {
-        var user = await context.Users.Where(u => u.Email == query.Email)
+        var user = await context.Users
+            .Where(u => u.Email == query.Email)
             .Select(u => u.ToUserResponse())
             .SingleOrDefaultAsync(cancellationToken);
 

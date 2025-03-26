@@ -1,6 +1,10 @@
-﻿namespace Domain;
+﻿using Domain.Airlines;
+using Domain.Users;
+using SharedKernel;
 
-public sealed class Review
+namespace Domain.Reviews;
+
+public sealed class Review : Entity
 {
     public Guid Id { get; set; }
     public Guid UserId { get; set; }

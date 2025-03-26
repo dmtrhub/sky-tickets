@@ -1,6 +1,4 @@
-﻿using Domain;
-
-namespace Application.Flights;
+﻿namespace Application.Flights;
 
 public sealed record FlightResponse
 {

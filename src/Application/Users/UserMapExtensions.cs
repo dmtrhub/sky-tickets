@@ -2,6 +2,7 @@
 using Application.Users.Register;
 using Application.Users.Update;
 using Domain;
+using Domain.Users;
 using System.Globalization;
 
 namespace Application.Users;
@@ -21,19 +22,13 @@ public static class UserMapExtensions
         };
 
     public static User ToUser(this RegisterUserCommand command, IPasswordHasher passwordHasher) =>
-        new()
-        {
-            Id = Guid.NewGuid(),
-            FirstName = command.FirstName,
-            LastName = command.LastName,
-            Email = command.Email,
-            PasswordHash = passwordHasher.Hash(command.Password),
-            DateOfBirth = DateOnly.ParseExact(command.DateOfBirth, "yyyy-MM-dd", CultureInfo.InvariantCulture),
-            Gender = Enum.Parse<Gender>(command.Gender, true),
-            Role = UserRole.Passenger,
-            Reservations = [],
-            Reviews = []
-        };
+        User.Create(
+            command.FirstName,
+            command.LastName,
+            command.Email,
+            passwordHasher.Hash(command.Password),
+            DateOnly.ParseExact(command.DateOfBirth, "yyyy-MM-dd", CultureInfo.InvariantCulture),
+            Enum.Parse<Gender>(command.Gender, true));
 
     public static void UpdateUser(this User user, UpdateUserCommand command, IPasswordHasher passwordHasher)
     {

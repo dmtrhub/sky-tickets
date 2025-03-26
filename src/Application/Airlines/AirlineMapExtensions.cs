@@ -1,7 +1,7 @@
 ﻿using Application.Airlines.Create;
 using Application.Airlines.Update;
 using Application.Flights;
-using Domain;
+using Domain.Airlines;
 
 namespace Application.Airlines;
 
