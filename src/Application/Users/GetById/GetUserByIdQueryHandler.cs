@@ -1,6 +1,6 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
-using Domain;
+using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
@@ -14,8 +14,11 @@ public sealed class GetUserByIdQueryHandler(
     {
         var user = await context.Users
             .Where(u => u.Id == query.UserId)
+            .Include(u => u.Reservations)
+            .ThenInclude(r => r.Flight)
+            .ThenInclude(f => f.Airline)
             .Select(u => u.ToUserResponse())
-            .SingleOrDefaultAsync(cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken);
 
         if(user is null)
             return Result.Failure<UserResponse>(UserErrors.NotFound(query.UserId));

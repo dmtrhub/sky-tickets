@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.Authentication;
+using Application.Reservations;
 using Application.Users.Register;
 using Application.Users.Update;
 using Domain;
@@ -18,7 +19,8 @@ public static class UserMapExtensions
             Email = user.Email,
             DateOfBirth = user.DateOfBirth,
             Gender = user.Gender.ToString(),
-            Role = user.Role.ToString()
+            Role = user.Role.ToString(),
+            Reservations = user.Reservations.Select(r => r.ToReservationResponse()).ToList()
         };
 
     public static User ToUser(this RegisterUserCommand command, IPasswordHasher passwordHasher) =>

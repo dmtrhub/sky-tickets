@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
 using Domain;
+using Domain.Airlines;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
@@ -20,6 +21,8 @@ public sealed class UpdateAirlineCommandHandler(IApplicationDbContext context)
             return Result.Failure<Guid>(AirlineErrors.NameInUse(command.Name!));
 
         airline.UpdateAirline(command);
+
+        airline.Raise(new AirlineUpdatedDomainEvent(airline.Name));
 
         await context.SaveChangesAsync(cancellationToken);
 

@@ -1,6 +1,5 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
-using Application.Flights;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;

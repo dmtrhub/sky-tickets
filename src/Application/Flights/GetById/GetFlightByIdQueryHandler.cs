@@ -1,6 +1,6 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
-using Domain;
+using Domain.Flights;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
@@ -13,8 +13,11 @@ public sealed class GetFlightByIdQueryHandler(IApplicationDbContext context)
     {
         var flight = await context.Flights
             .Where(f => f.Id == query.Id)
+            .Include(f => f.Airline)
+            .Include(f => f.Reservations)
+            .ThenInclude(r => r.User)
             .Select(f => f.ToFlightResponse())
-            .SingleOrDefaultAsync(cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken);
 
         if(flight is null)
             return Result.Failure<FlightResponse>(FlightErrors.NotFound(query.Id));

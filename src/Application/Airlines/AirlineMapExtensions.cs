@@ -2,6 +2,7 @@
 using Application.Airlines.Update;
 using Application.Flights;
 using Domain.Airlines;
+using Domain;
 
 namespace Application.Airlines;
 
@@ -14,20 +15,11 @@ public static class AirlineMapExtensions
             Name = airline.Name,
             Address = airline.Address,
             ContactInfo = airline.ContactInfo,
-            Flights = airline.Flights.Select(f => f.ToFlightResponse()).ToList(),
-            //Reviews = airline.Reviews
+            ActiveFlights = airline.Flights.Where(f => f.Status is FlightStatus.Active).Select(f => f.ToFlightResponse()).ToList(),
         };
 
     public static Airline ToAirline(this CreateAirlineCommand command) =>
-        new()
-        {
-            Id = Guid.NewGuid(),
-            Name = command.Name,
-            Address = command.Address,
-            ContactInfo = command.ContactInfo,
-            Flights = [],
-            Reviews = []
-        };
+        Airline.Create(command.Name, command.Address, command.ContactInfo);
 
     public static void UpdateAirline(this Airline airline, UpdateAirlineCommand command)
     {

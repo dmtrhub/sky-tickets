@@ -1,6 +1,6 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
-using Domain;
+using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
@@ -12,6 +12,9 @@ public sealed class GetAllUsersQueryHandler(IApplicationDbContext context)
     public async Task<Result<List<UserResponse>>> Handle(GetAllUsersQuery query, CancellationToken cancellationToken)
     {
         var users = await context.Users
+            .Include(u => u.Reservations)
+            .ThenInclude(r => r.Flight)
+            .ThenInclude(f => f.Airline)
             .Select(u => u.ToUserResponse())
             .ToListAsync(cancellationToken);
 

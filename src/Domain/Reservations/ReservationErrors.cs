@@ -1,6 +1,6 @@
 ﻿using SharedKernel;
 
-namespace Domain;
+namespace Domain.Reservations;
 
 public static class ReservationErrors
 {
@@ -18,4 +18,7 @@ public static class ReservationErrors
 
     public static Error NotCompleted(Guid reservationId) =>
         Error.Problem("Reservation.NotCompleted", $"Reservation with id {reservationId} was not completed");
+
+    public static readonly Error NoReservationsFound =
+        Error.NotFound("Reservation.NoReservationsFound", $"No reservations found in the system");
 }

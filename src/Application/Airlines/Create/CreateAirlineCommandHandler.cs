@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
 using Domain;
+using Domain.Airlines;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
@@ -15,6 +16,8 @@ public sealed class CreateAirlineCommandHandler(IApplicationDbContext context)
             return Result.Failure<Guid>(AirlineErrors.NameInUse(command.Name));
 
         var airline = command.ToAirline();
+
+        airline.Raise(new AirlineCreatedDomainEvent(airline.Name));
 
         await context.Airlines.AddAsync(airline, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);

@@ -13,8 +13,9 @@ public sealed class GetAirlineByIdQueryHandler(IApplicationDbContext context)
     {
         var airline = await context.Airlines
             .Where(a => a.Id == query.Id)
+            .Include(a => a.Flights)
             .Select(a => a.ToAirlineResponse())
-            .SingleOrDefaultAsync(cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken);
 
         if (airline is null)
             return Result.Failure<AirlineResponse>(AirlineErrors.NotFound(query.Id));

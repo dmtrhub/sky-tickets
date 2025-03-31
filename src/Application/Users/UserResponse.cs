@@ -1,4 +1,6 @@
-﻿namespace Application.Users;
+﻿using Application.Reservations;
+
+namespace Application.Users;
 
 public sealed record UserResponse
 {
@@ -9,4 +11,7 @@ public sealed record UserResponse
     public DateOnly DateOfBirth { get; init; }
     public string Gender { get; init; }
     public string Role { get; init; }
+
+    // Reservation
+    public List<ReservationResponse> Reservations { get; init; }
 }

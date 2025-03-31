@@ -1,6 +1,8 @@
 ﻿using Application.Flights.Create;
 using Application.Flights.Update;
+using Application.Reservations;
 using Domain;
+using Domain.Airlines;
 using Domain.Flights;
 using System.Globalization;
 
@@ -12,7 +14,6 @@ public static class FlightMapExtensions
         new()
         {
             Id = flight.Id,
-            AirlineId = flight.AirlineId,
             Departure = flight.Departure,
             Destination = flight.Destination,
             DepartureTime = flight.DepartureTime,
@@ -21,22 +22,18 @@ public static class FlightMapExtensions
             BookedSeats = flight.BookedSeats,
             Price = flight.Price,
             Status = flight.Status.ToString(),
-            //Reservations = flight.Reservations
+            Reservations = flight.Reservations.Select(r => r.ToReservationResponse()).ToList(),
+            AirlineName = flight.Airline.Name
         };
 
     public static Flight ToFlight(this CreateFlightCommand command) =>
-        new()
-        {
-            Id = Guid.NewGuid(),
-            AirlineId = command.AirlineId,
-            Departure = command.Departure,
-            Destination = command.Destination,
-            DepartureTime = DateTime.ParseExact(command.DepartureTime, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture),
-            ArrivalTime = DateTime.ParseExact(command.ArrivalTime, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture),
-            AvailableSeats = command.AvailableSeats,
-            BookedSeats = 0,
-            Price = command.Price
-        };
+        Flight.Create(command.AirlineId,
+            command.Departure,
+            command.Destination,
+            DateTime.ParseExact(command.DepartureTime, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture),
+            DateTime.ParseExact(command.ArrivalTime, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture),
+            command.AvailableSeats,
+            command.Price);
 
     public static void UpdateFlight(this Flight flight, UpdateFlightCommand command)
     {

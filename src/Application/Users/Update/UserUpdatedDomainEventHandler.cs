@@ -7,7 +7,7 @@ internal sealed class UserUpdatedDomainEventHandler : INotificationHandler<UserU
 {
     public Task Handle(UserUpdatedDomainEvent notification, CancellationToken cancellationToken)
     {
-        Console.WriteLine($"\nUser with ID {notification.UserId} has been updated.\n");
+        Console.WriteLine($"\n[EVENT] User with ID {notification.UserId} has been updated. [{DateTime.UtcNow}]\n");
 
         return Task.CompletedTask;
     }

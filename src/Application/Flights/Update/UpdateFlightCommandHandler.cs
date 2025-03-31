@@ -1,6 +1,6 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
-using Domain;
+using Domain.Flights;
 using SharedKernel;
 
 namespace Application.Flights.Update;
@@ -16,6 +16,8 @@ public sealed class UpdateFlightCommandHandler(IApplicationDbContext context)
             return Result.Failure<Guid>(FlightErrors.NotFound(command.Id));
 
         flight.UpdateFlight(command);
+
+        flight.Raise(new FlightUpdatedDomainEvent(flight.Id, flight.Departure, flight.Destination));
 
         await context.SaveChangesAsync(cancellationToken);
 

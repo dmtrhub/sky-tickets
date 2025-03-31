@@ -8,6 +8,5 @@ public sealed record AirlineResponse
     public string Name { get; init; }
     public string Address { get; init; }
     public string ContactInfo { get; init; }
-    public List<FlightResponse> Flights { get; init; }
-    //public List<FlightResponse> Reviews { get; init; } 
+    public List<FlightResponse> ActiveFlights { get; init; } 
 }

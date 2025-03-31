@@ -7,7 +7,7 @@ internal sealed class UserDeletedDomainEventHandler : INotificationHandler<UserD
 {
     public Task Handle(UserDeletedDomainEvent notification, CancellationToken cancellationToken)
     {
-        Console.WriteLine($"\nUser with ID {notification.UserId} has been deleted.\n");
+        Console.WriteLine($"\n[EVENT] User with ID {notification.UserId} has been deleted. [{DateTime.UtcNow}]\n");
 
         return Task.CompletedTask;
     }

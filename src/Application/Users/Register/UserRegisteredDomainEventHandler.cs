@@ -7,7 +7,7 @@ internal sealed class UserRegisteredDomainEventHandler : INotificationHandler<Us
 {
     public Task Handle(UserRegisteredDomainEvent notification, CancellationToken cancellationToken)
     {
-        Console.WriteLine($"\nUser with ID {notification.UserId} has been registered.\n");
+        Console.WriteLine($"\n[EVENT] User with ID {notification.UserId} has been registered. [{DateTime.UtcNow}]\n");
         // TODO: Send an email verification
         return Task.CompletedTask;
     }

@@ -1,6 +1,6 @@
 ﻿using SharedKernel;
 
-namespace Domain;
+namespace Domain.Reviews;
 
 public static class ReviewErrors
 {
@@ -14,4 +14,7 @@ public static class ReviewErrors
         Error.Problem("Review.NotApproved", $"Review with id {reviewId} was not approved");
     public static Error NotRejected(Guid reviewId) =>
         Error.Problem("Review.NotRejected", $"Review with id {reviewId} was not rejected");
+
+    public static readonly Error NoReviewsFound =
+        Error.NotFound("Review.NoReviewsFound", $"No reviews found in the system");
 }
