@@ -21,4 +21,7 @@ public static class FlightErrors
 
     public static readonly Error NoFlightsFound =
         Error.NotFound("Flight.NoFlightFound", $"No flights found in the system");
+
+    public static readonly Error HasReservations =
+        Error.Problem("Flight.HasReservations", "Cannot delete flight with reservations");
 }

@@ -13,6 +13,7 @@ public sealed class GetAllAirlinesQueryHandler(IApplicationDbContext context)
     {
         var airlines = await context.Airlines
             .Include(a => a.Flights)
+            .Include(a => a.Reviews)
             .Select(a => a.ToAirlineResponse())
             .ToListAsync(cancellationToken);
 

@@ -2,4 +2,4 @@
 
 namespace Application.Reviews.GetAll;
 
-public sealed class GetAllReviewsQuery() : IQuery<List<ReviewResponse>>;
+public sealed record GetAllReviewsQuery() : IQuery<List<ReviewResponse>>;

@@ -14,6 +14,7 @@ public sealed class GetAirlineByIdQueryHandler(IApplicationDbContext context)
         var airline = await context.Airlines
             .Where(a => a.Id == query.Id)
             .Include(a => a.Flights)
+            .Include(a => a.Reviews)
             .Select(a => a.ToAirlineResponse())
             .FirstOrDefaultAsync(cancellationToken);
 

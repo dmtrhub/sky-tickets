@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.Behaviors;
+using Application.Flights;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +17,8 @@ public static class DependencyInjection
         });
 
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly, includeInternalTypes: true);
+
+        services.AddHostedService<FlightStatusUpdater>();
 
         return services;
     }

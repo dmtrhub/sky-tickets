@@ -10,6 +10,8 @@ public static class AirlineErrors
     public static readonly Error NoAirlinesFound =
         Error.NotFound("Airlines.NoAirlineFound", "No airlines found in the system");
 
+    public static readonly Error CannotDeleteWithActiveFlights =
+        Error.Conflict("Airlines.CannotDeleteWithActiveFlights", "Cannot delete airline with active flights");
     public static Error NameInUse(string name) =>
         Error.Conflict("Airlines.NameInUse", $"The name '{name}' is already in use");
 }

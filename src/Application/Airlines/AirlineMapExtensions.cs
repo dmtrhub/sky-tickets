@@ -3,6 +3,7 @@ using Application.Airlines.Update;
 using Application.Flights;
 using Domain.Airlines;
 using Domain;
+using Application.Reviews;
 
 namespace Application.Airlines;
 
@@ -16,6 +17,7 @@ public static class AirlineMapExtensions
             Address = airline.Address,
             ContactInfo = airline.ContactInfo,
             ActiveFlights = airline.Flights.Where(f => f.Status is FlightStatus.Active).Select(f => f.ToFlightResponse()).ToList(),
+            ApprovedReviews = airline.Reviews.Where(r => r.Status is ReviewStatus.Approved).Select(r => r.ToReviewResponse()).ToList()
         };
 
     public static Airline ToAirline(this CreateAirlineCommand command) =>

@@ -21,7 +21,7 @@ public sealed class UpdateUserCommandHandler(
         if (await context.Users.AnyAsync(u => u.Email == command.Email && u.Id != command.Id, cancellationToken))
             return Result.Failure<Guid>(UserErrors.EmailInUse(command.Email!));
 
-        user.UpdateUser(command, passwordHasher);
+        user.UpdateUser(command, passwordHasher, true);
 
         user.Raise(new UserUpdatedDomainEvent(user.Id));
 

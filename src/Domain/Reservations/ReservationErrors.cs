@@ -21,4 +21,7 @@ public static class ReservationErrors
 
     public static readonly Error NoReservationsFound =
         Error.NotFound("Reservation.NoReservationsFound", $"No reservations found in the system");
+
+    public static readonly Error CannotCancel =
+        Error.Problem("Reservation.CannotCancel", "Cannot cancel reservation");
 }

@@ -14,6 +14,7 @@ public sealed class GetUserByIdQueryHandler(
     {
         var user = await context.Users
             .Where(u => u.Id == query.UserId)
+            .Include(u => u.Reviews)
             .Include(u => u.Reservations)
             .ThenInclude(r => r.Flight)
             .ThenInclude(f => f.Airline)

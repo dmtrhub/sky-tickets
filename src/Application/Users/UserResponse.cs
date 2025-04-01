@@ -1,4 +1,5 @@
 ﻿using Application.Reservations;
+using Application.Reviews;
 
 namespace Application.Users;
 
@@ -14,4 +15,5 @@ public sealed record UserResponse
 
     // Reservation
     public List<ReservationResponse> Reservations { get; init; }
+    public List<ReviewResponse> Reviews { get; init; }
 }

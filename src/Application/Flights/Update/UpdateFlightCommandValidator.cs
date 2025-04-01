@@ -9,14 +9,6 @@ internal sealed class UpdateFlightCommandValidator : AbstractValidator<UpdateFli
     private const string DateTimeFormat = "yyyy-MM-dd HH:mm";
     public UpdateFlightCommandValidator()
     {
-        RuleFor(c => c.Departure)
-            .MaximumLength(50)
-            .When(c => !string.IsNullOrWhiteSpace(c.Departure));
-
-        RuleFor(c => c.Destination)
-            .MaximumLength(50)
-            .When(c => !string.IsNullOrWhiteSpace(c.Destination));
-
         RuleFor(c => c.DepartureTime)
             .Must(BeValidDateTime)
             .WithMessage($"Departure time must be in format {DateTimeFormat}.")

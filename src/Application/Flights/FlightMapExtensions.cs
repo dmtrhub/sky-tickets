@@ -35,14 +35,8 @@ public static class FlightMapExtensions
             command.AvailableSeats,
             command.Price);
 
-    public static void UpdateFlight(this Flight flight, UpdateFlightCommand command)
+    public static void UpdateFlight(this Flight flight, UpdateFlightCommand command, bool hasReservations)
     {
-        if (!string.IsNullOrEmpty(command.Departure))
-            flight.Departure = command.Departure;
-
-        if(!string.IsNullOrEmpty(command.Destination))
-            flight.Destination = command.Destination;
-
         if (!string.IsNullOrEmpty(command.DepartureTime))
             flight.DepartureTime = DateTime.ParseExact(command.DepartureTime, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
 
@@ -58,7 +52,7 @@ public static class FlightMapExtensions
         if (command.BookedSeats.HasValue)
             flight.BookedSeats = command.BookedSeats.Value;
 
-        if (command.Price.HasValue)
+        if (command.Price.HasValue && !hasReservations)
             flight.Price = command.Price.Value;
     }
 }

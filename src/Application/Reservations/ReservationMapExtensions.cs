@@ -35,4 +35,11 @@ public static class ReservationMapExtensions
         if (!string.IsNullOrEmpty(command.Status))
             reservation.Status = Enum.Parse<ReservationStatus>(command.Status, true);
     }
+
+    public static void CancelReservation(this Reservation reservation)
+    {
+        reservation.Flight.AvailableSeats += reservation.PassengerCount;
+        reservation.Flight.BookedSeats -= reservation.PassengerCount;
+        reservation.Status = ReservationStatus.Canceled;
+    }
 }

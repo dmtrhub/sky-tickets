@@ -32,7 +32,7 @@ public static class UserMapExtensions
             DateOnly.ParseExact(command.DateOfBirth, "yyyy-MM-dd", CultureInfo.InvariantCulture),
             Enum.Parse<Gender>(command.Gender, true));
 
-    public static void UpdateUser(this User user, UpdateUserCommand command, IPasswordHasher passwordHasher)
+    public static void UpdateUser(this User user, UpdateUserCommand command, IPasswordHasher passwordHasher, bool isAdmin)
     {
         if(!string.IsNullOrEmpty(command.FirstName))
             user.FirstName = command.FirstName;
@@ -52,7 +52,7 @@ public static class UserMapExtensions
         if (!string.IsNullOrEmpty(command.Gender))
             user.Gender = Enum.Parse<Gender>(command.Gender, true);
 
-        if (!string.IsNullOrEmpty(command.Role))
+        if (!string.IsNullOrEmpty(command.Role) && isAdmin)
             user.Role = Enum.Parse<UserRole>(command.Role, true);
     }
 }

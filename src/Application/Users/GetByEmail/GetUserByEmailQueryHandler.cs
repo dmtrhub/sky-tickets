@@ -13,6 +13,7 @@ public sealed class GetUserByEmailQueryHandler(IApplicationDbContext context)
     {
         var user = await context.Users
             .Where(u => u.Email == query.Email)
+            .Include(u => u.Reviews)
             .Include(u => u.Reservations)
             .ThenInclude(r => r.Flight)
             .ThenInclude(f => f.Airline)
