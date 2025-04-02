@@ -1,4 +1,5 @@
 ﻿using Application.Reviews.Delete;
+using Infrastructure.Authorization;
 using MediatR;
 using Presentation.Extensions;
 using Presentation.Infrastructure;
@@ -18,6 +19,8 @@ public class Delete : IEndpoint
 
             return result.Match(Results.Ok, CustomResults.Problem);
         })
-        .WithTags(Tags.Reviews);
+        .WithTags(Tags.Reviews)
+        .RequireAuthorization(AuthorizationPolicies.AdministratorPolicy)
+        .RequireAuthorization(AuthorizationPolicies.PassengerPolicy);
     }
 }

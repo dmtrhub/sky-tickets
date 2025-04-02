@@ -1,6 +1,7 @@
 ﻿using Application.Reviews;
 using Application.Reviews.GetAll;
 using Application.Reviews.GetById;
+using Infrastructure.Authorization;
 using MediatR;
 using Presentation.Extensions;
 using Presentation.Infrastructure;
@@ -20,6 +21,7 @@ public class GetById : IEndpoint
 
             return result.Match(Results.Ok, CustomResults.Problem);
         })
-        .WithTags(Tags.Reviews);
+        .WithTags(Tags.Reviews)
+        .RequireAuthorization(AuthorizationPolicies.AdministratorPolicy);
     }
 }

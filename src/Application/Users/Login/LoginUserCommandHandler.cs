@@ -28,6 +28,8 @@ public class LoginUserCommandHandler(
 
         var token = tokenProvider.Create(user);
 
+        user.Raise(new UserLoggedInDomainEvent(user.Id));
+
         return token;
     }
 }

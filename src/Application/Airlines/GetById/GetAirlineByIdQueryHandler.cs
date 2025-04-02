@@ -1,6 +1,6 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
-using Domain;
+using Domain.Airlines;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 

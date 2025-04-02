@@ -1,4 +1,5 @@
 ﻿using Application.Reservations.Delete;
+using Infrastructure.Authorization;
 using MediatR;
 using Presentation.Extensions;
 using Presentation.Infrastructure;
@@ -18,6 +19,7 @@ public class Delete : IEndpoint
 
             return result.Match(Results.Ok, CustomResults.Problem);
         })
-        .WithTags(Tags.Reservations);
+        .WithTags(Tags.Reservations)
+        .RequireAuthorization(AuthorizationPolicies.AdministratorPolicy);
     }
 }

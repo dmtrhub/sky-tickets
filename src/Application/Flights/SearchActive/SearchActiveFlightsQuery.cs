@@ -2,4 +2,8 @@
 
 namespace Application.Flights.SearchActive;
 
-public sealed record SearchActiveFlightsQuery(string Destination, DateTime DepartureTime) : IQuery<List<FlightResponse>>;
+public sealed record SearchActiveFlightsQuery(
+    string? Destination,
+    DateTime? Date,
+    int? MinSeatsAvailable,
+    decimal? MaxPrice) : IQuery<List<FlightResponse>>;

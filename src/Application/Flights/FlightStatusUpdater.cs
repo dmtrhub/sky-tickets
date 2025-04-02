@@ -1,36 +1,37 @@
 ﻿using Application.Abstractions.Data;
 using Domain;
+using Domain.Flights;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace Application.Flights;
 
-public class FlightStatusUpdater(IServiceScopeFactory scopeFactory) : BackgroundService
+public class FlightStatusUpdater(IApplicationDbContext context)
 {
-    private readonly TimeSpan _checkInterval = TimeSpan.FromMinutes(5);
-
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    public async Task UpdateFlightStatuses()
     {
-        while (!stoppingToken.IsCancellationRequested)
+        var now = DateTime.UtcNow;
+        var flightsToComplete = await context.Flights
+            .Where(f => f.Status == FlightStatus.Active && f.ArrivalTime <= now)
+            .ToListAsync();
+
+        foreach (var flight in flightsToComplete)
         {
-            using var scope = scopeFactory.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
-
-            var now = DateTime.UtcNow;
-
-            var flightsToComplete = await context.Flights
-                .Where(f => f.Status == FlightStatus.Active && f.ArrivalTime <= now)
-                .ToListAsync(stoppingToken);
-
-            foreach (var flight in flightsToComplete)
-            {
-                flight.Status = FlightStatus.Completed;
-            }
-
-            await context.SaveChangesAsync(stoppingToken);
-
-            await Task.Delay(_checkInterval, stoppingToken);
+            flight.Status = FlightStatus.Completed;
+            flight.Raise(new FlightCompletedDomainEvent(flight.Id, flight.Departure, flight.Destination));
         }
+
+        await context.SaveChangesAsync();
+    }
+}
+
+internal sealed class FlightCompletedDomainEventHandler : INotificationHandler<FlightCompletedDomainEvent>
+{
+    public Task Handle(FlightCompletedDomainEvent notification, CancellationToken cancellationToken)
+    {
+        Console.WriteLine($"\n[EVENT] Flight with ID {notification.Id}: {notification.Departure.ToUpper()}" +
+            $" -> {notification.Destination.ToUpper()} completed. [{DateTime.UtcNow}]\n");
+
+        return Task.CompletedTask;
     }
 }

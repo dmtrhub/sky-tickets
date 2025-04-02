@@ -15,6 +15,8 @@ public sealed class DeleteReviewCommandHandler(IApplicationDbContext context)
         if (review is null)
             return Result.Failure<Guid>(ReviewErrors.NotFound(command.Id));
 
+        review.Raise(new ReviewDeletedDomainEvent(review.Id));
+
         context.Reviews.Remove(review);
         await context.SaveChangesAsync(cancellationToken);
 

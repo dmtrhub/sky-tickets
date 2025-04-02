@@ -1,9 +1,8 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
 using Domain.Flights;
-using Domain;
-using SharedKernel;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel;
 
 namespace Application.Flights.SearchActive;
 
@@ -12,10 +11,9 @@ public sealed class SearchActiveFlightsQueryHandler(IApplicationDbContext contex
 {
     public async Task<Result<List<FlightResponse>>> Handle(SearchActiveFlightsQuery query, CancellationToken cancellationToken)
     {
-        var flights = await context.Flights
-            .Where(f => f.Destination.Contains(query.Destination)
-                && f.DepartureTime == query.DepartureTime
-                && f.Status == FlightStatus.Active)
+        var flightsQuery = context.Flights.AsQueryable();
+   
+        var flights = await flightsQuery
             .Include(f => f.Airline)
             .Include(f => f.Reservations)
             .ThenInclude(r => r.User)

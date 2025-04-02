@@ -10,7 +10,7 @@ public sealed class DeleteUserCommandHandler(IApplicationDbContext context)
 {
     public async Task<Result<Guid>> Handle(DeleteUserCommand command, CancellationToken cancellationToken)
     {
-        var user = await context.Users.FindAsync([command.Id], cancellationToken);
+        var user = await context.Users.FindAsync(command.Id, cancellationToken);
 
         if (user is null)
             return Result.Failure<Guid>(UserErrors.NotFound(command.Id));

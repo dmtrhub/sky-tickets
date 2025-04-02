@@ -1,5 +1,6 @@
 ﻿using Application.Reservations;
 using Application.Reservations.GetById;
+using Infrastructure.Authorization;
 using MediatR;
 using Presentation.Extensions;
 using Presentation.Infrastructure;
@@ -19,6 +20,7 @@ public class GetById : IEndpoint
 
             return result.Match(Results.Ok, CustomResults.Problem);
         })
-        .WithTags(Tags.Reservations);
+        .WithTags(Tags.Reservations)
+        .RequireAuthorization(AuthorizationPolicies.AdministratorPolicy);
     }
 }

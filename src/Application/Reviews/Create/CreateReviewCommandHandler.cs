@@ -1,52 +1,51 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
+using Application.Extensions;
 using Domain;
 using Domain.Reviews;
 using Domain.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
-using System.Security.Claims;
 
 namespace Application.Reviews.Create;
 
 public sealed class CreateReviewCommandHandler(
     IApplicationDbContext context,
-    IHttpContextAccessor httpContextAccessor)
-    : ICommandHandler<CreateReviewCommand, Guid>
+    IHttpContextAccessor httpContextAccessor) : ICommandHandler<CreateReviewCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(CreateReviewCommand command, CancellationToken cancellationToken)
     {
-        var userId = httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = httpContextAccessor.GetUserId();
 
-        if (string.IsNullOrEmpty(userId) || !Guid.TryParse(userId, out var parsedUserId))
+        if (userId is null)
             return Result.Failure<Guid>(UserErrors.Unauthenticated);
 
-        var user = await context.Users.FindAsync(parsedUserId, cancellationToken);
+        var user = await context.Users.FindAsync(userId, cancellationToken);
 
         if (user is null)
-            return Result.Failure<Guid>(UserErrors.NotFound(parsedUserId));
+            return Result.Failure<Guid>(UserErrors.NotFound(userId.Value));
 
         bool hasCompletedFlight = await context.Reservations
             .Include(r => r.Flight)
             .ThenInclude(f => f.Airline)
-            .AnyAsync(r => r.UserId == parsedUserId
-                           && r.Flight.AirlineId == command.AirlineId
-                           && r.Flight.Status == FlightStatus.Completed,
-                      cancellationToken);
+            .AnyAsync(r => r.UserId == userId
+                        && r.Flight.AirlineId == command.AirlineId
+                        && r.Flight.Status == FlightStatus.Completed,
+                        cancellationToken);
 
         if (!hasCompletedFlight)
             return Result.Failure<Guid>(ReviewErrors.NoCompletedFlightForAirline(command.AirlineId));
 
         bool reviewExists = await context.Reviews
-            .AnyAsync(r => r.UserId == parsedUserId && r.AirlineId == command.AirlineId, cancellationToken);
+            .AnyAsync(r => r.UserId == userId && r.AirlineId == command.AirlineId, cancellationToken);
 
         if (reviewExists)
             return Result.Failure<Guid>(ReviewErrors.AlreadyReviewed(command.AirlineId));
 
-        var review = command.ToReview(parsedUserId);
+        var review = command.ToReview(userId.Value);
 
-        //event
+        review.Raise(new ReviewCreatedDomainEvent(review.Id));
 
         await context.Reviews.AddAsync(review, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);

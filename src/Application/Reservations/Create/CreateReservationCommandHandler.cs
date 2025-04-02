@@ -1,33 +1,32 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
+using Application.Extensions;
 using Domain;
 using Domain.Flights;
 using Domain.Reservations;
 using Domain.Users;
 using Microsoft.AspNetCore.Http;
 using SharedKernel;
-using System.Security.Claims;
 
 namespace Application.Reservations.Create;
 
 public sealed class CreateReservationCommandHandler(
     IApplicationDbContext context,
-    IHttpContextAccessor httpContextAccessor)
-    : ICommandHandler<CreateReservationCommand, Guid>
+    IHttpContextAccessor httpContextAccessor) : ICommandHandler<CreateReservationCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(CreateReservationCommand command, CancellationToken cancellationToken)
     {
-        var userId = httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = httpContextAccessor.GetUserId();
 
-        if (string.IsNullOrEmpty(userId) || !Guid.TryParse(userId, out var parsedUserId))
+        if (userId is null)
             return Result.Failure<Guid>(UserErrors.Unauthenticated);
 
-        var user = await context.Users.FindAsync([parsedUserId], cancellationToken);
+        var user = await context.Users.FindAsync(userId, cancellationToken);
 
-        if(user is null)
-            return Result.Failure<Guid>(UserErrors.NotFound(parsedUserId));
+        if (user is null)
+            return Result.Failure<Guid>(UserErrors.NotFound(userId.Value));
 
-        var flight = await context.Flights.FindAsync([command.FlightId], cancellationToken);
+        var flight = await context.Flights.FindAsync(command.FlightId, cancellationToken);
 
         if(flight is null)
             return Result.Failure<Guid>(FlightErrors.NotFound(command.FlightId));
@@ -39,7 +38,7 @@ public sealed class CreateReservationCommandHandler(
             return Result.Failure<Guid>(FlightErrors.NotEnoughSeats);
 
         var totalPrice = flight.Price * command.PassengerCount;      
-        var reservation = command.ToReservation(parsedUserId, totalPrice);
+        var reservation = command.ToReservation(userId.Value, totalPrice);
 
         flight.BookedSeats += command.PassengerCount;
         flight.AvailableSeats -= command.PassengerCount;

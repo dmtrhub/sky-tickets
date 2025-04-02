@@ -1,5 +1,6 @@
 ﻿using Application.Reviews;
 using Application.Reviews.GetAll;
+using Infrastructure.Authorization;
 using MediatR;
 using Presentation.Extensions;
 using Presentation.Infrastructure;
@@ -19,6 +20,7 @@ public class GetAll : IEndpoint
 
             return result.Match(Results.Ok, CustomResults.Problem);
         })
-        .WithTags(Tags.Reviews);
+        .WithTags(Tags.Reviews)
+        .RequireAuthorization(AuthorizationPolicies.AdministratorPolicy);
     }
 }

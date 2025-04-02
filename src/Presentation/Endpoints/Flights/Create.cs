@@ -1,4 +1,5 @@
 ﻿using Application.Flights.Create;
+using Infrastructure.Authorization;
 using MediatR;
 using Presentation.Extensions;
 using Presentation.Infrastructure;
@@ -34,6 +35,7 @@ public sealed class Create : IEndpoint
 
             return result.Match(Results.Created, CustomResults.Problem);
         })
-        .WithTags(Tags.Flights);
+        .WithTags(Tags.Flights)
+        .RequireAuthorization(AuthorizationPolicies.AdministratorPolicy);
     }
 }

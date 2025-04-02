@@ -1,4 +1,5 @@
 using Application;
+using Hangfire;
 using Infrastructure;
 using Presentation.Extensions;
 using System.Reflection;
@@ -9,13 +10,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 
 builder.Services
-    .AddApplication()
+    .AddApplication(builder.Configuration)
     .AddPresentation()
     .AddInfrastructure(builder.Configuration);
     
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
+
+app.UseHangfireDashboard();
+app.UseHangfireJobs();
 
 app.MapEndpoints();
 

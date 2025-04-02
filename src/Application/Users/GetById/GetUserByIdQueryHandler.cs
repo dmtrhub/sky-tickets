@@ -6,8 +6,7 @@ using SharedKernel;
 
 namespace Application.Users.GetById;
 
-public sealed class GetUserByIdQueryHandler(
-    IApplicationDbContext context)
+public sealed class GetUserByIdQueryHandler(IApplicationDbContext context)
     : IQueryHandler<GetUserByIdQuery, UserResponse>
 {
     public async Task<Result<UserResponse>> Handle(GetUserByIdQuery query, CancellationToken cancellationToken)

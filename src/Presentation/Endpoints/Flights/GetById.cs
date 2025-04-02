@@ -1,5 +1,6 @@
 ﻿using Application.Flights;
 using Application.Flights.GetById;
+using Infrastructure.Authorization;
 using MediatR;
 using Presentation.Extensions;
 using Presentation.Infrastructure;
@@ -19,6 +20,7 @@ public sealed class GetById : IEndpoint
 
             return result.Match(Results.Ok, CustomResults.Problem);
         })
-        .WithTags(Tags.Flights);
+        .WithTags(Tags.Flights)
+        .RequireAuthorization(AuthorizationPolicies.AdministratorPolicy);
     }
 }

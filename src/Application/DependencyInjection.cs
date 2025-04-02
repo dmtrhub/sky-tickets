@@ -1,13 +1,16 @@
 ﻿using Application.Abstractions.Behaviors;
-using Application.Flights;
 using FluentValidation;
+using Hangfire;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static IServiceCollection AddApplication(
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
         services.AddMediatR(config =>
         {
@@ -18,7 +21,13 @@ public static class DependencyInjection
 
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly, includeInternalTypes: true);
 
-        services.AddHostedService<FlightStatusUpdater>();
+        services.AddHangfire(config =>
+            config.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+            .UseSimpleAssemblyNameTypeSerializer()
+            .UseRecommendedSerializerSettings()
+            .UseSqlServerStorage(configuration.GetConnectionString("Database")));
+
+        services.AddHangfireServer();
 
         return services;
     }

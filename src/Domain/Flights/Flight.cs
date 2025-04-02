@@ -37,7 +37,6 @@ public sealed class Flight : Entity
         AvailableSeats = availableSeats;
         BookedSeats = 0;
         Price = price;
-
     }
 
     public static Flight Create(
@@ -48,12 +47,12 @@ public sealed class Flight : Entity
         DateTime arrivalTime,
         int availableSeats,
         decimal price) =>
-        new(
-            airlineId,
-            departure,
-            destination,
-            departureTime,
-            arrivalTime,
-            availableSeats,
-            price);
+            new(
+                airlineId,
+                departure,
+                destination,
+                departureTime,
+                arrivalTime,
+                availableSeats,
+                price);
 }

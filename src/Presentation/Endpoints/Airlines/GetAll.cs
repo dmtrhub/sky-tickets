@@ -21,6 +21,7 @@ public sealed class GetAll : IEndpoint
             return result.Match(Results.Ok, CustomResults.Problem);
         })
         .WithTags(Tags.Airlines)
-        .RequireAuthorization(AuthorizationPolicies.AdministratorPolicy);
+        .RequireAuthorization(AuthorizationPolicies.AdministratorPolicy)
+        .RequireAuthorization(AuthorizationPolicies.PassengerPolicy);
     }
 }

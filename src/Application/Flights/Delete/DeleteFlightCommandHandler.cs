@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
+using Domain;
 using Domain.Flights;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
@@ -19,8 +20,8 @@ public sealed class DeleteFlightCommandHandler(IApplicationDbContext context)
         if (flight is null)
             return Result.Failure<Guid>(FlightErrors.NotFound(command.Id));
 
-        bool hasReservations = flight.Reservations.Any(r => r.Status == Domain.ReservationStatus.Created
-            || r.Status == Domain.ReservationStatus.Approved);
+        bool hasReservations = flight.Reservations.Any(r => r.Status == ReservationStatus.Created
+            || r.Status == ReservationStatus.Approved);
 
         if (hasReservations)
             return Result.Failure<Guid>(FlightErrors.HasReservations);

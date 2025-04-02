@@ -61,6 +61,14 @@
               "target": "Package",
               "version": "[11.11.0, )"
             },
+            "Hangfire": {
+              "target": "Package",
+              "version": "[1.8.18, )"
+            },
+            "Hangfire.SqlServer": {
+              "target": "Package",
+              "version": "[1.8.18, )"
+            },
             "MediatR": {
               "target": "Package",
               "version": "[12.4.1, )"

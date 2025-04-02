@@ -1,4 +1,5 @@
 ﻿using Application.Reservations.Update;
+using Infrastructure.Authorization;
 using MediatR;
 using Presentation.Extensions;
 using Presentation.Infrastructure;
@@ -22,6 +23,7 @@ public class Update : IEndpoint
 
             return result.Match(Results.Ok, CustomResults.Problem);
         })
-        .WithTags(Tags.Reservations);
+        .WithTags(Tags.Reservations)
+        .RequireAuthorization(AuthorizationPolicies.AdministratorPolicy);
     }
 }

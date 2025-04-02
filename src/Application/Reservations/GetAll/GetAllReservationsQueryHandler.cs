@@ -19,9 +19,7 @@ public sealed class GetAllReservationsQueryHandler(IApplicationDbContext context
             .ToListAsync(cancellationToken);
 
         if(reservations is null)
-        {
             return Result.Failure<List<ReservationResponse>>(ReservationErrors.NoReservationsFound);
-        }
 
         return reservations;
     }

@@ -1,4 +1,5 @@
 ﻿using Application.Reviews.Update;
+using Infrastructure.Authorization;
 using MediatR;
 using Presentation.Extensions;
 using Presentation.Infrastructure;
@@ -23,6 +24,7 @@ public class Update : IEndpoint
 
             return result.Match(Results.Ok, CustomResults.Problem);
         })
-        .WithTags(Tags.Reviews);
+        .WithTags(Tags.Reviews)
+        .RequireAuthorization(AuthorizationPolicies.PassengerPolicy);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Application.Users.Update;
+using Infrastructure.Authorization;
 using MediatR;
 using Presentation.Extensions;
 using Presentation.Infrastructure;
@@ -35,6 +36,7 @@ public sealed class Update : IEndpoint
 
             return result.Match(Results.Ok, CustomResults.Problem);
         })
-        .WithTags(Tags.Users);
+        .WithTags(Tags.Users)
+        .RequireAuthorization(AuthorizationPolicies.AdministratorPolicy);
     }
 }

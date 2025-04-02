@@ -1,8 +1,8 @@
 ﻿using Application.Flights.Create;
+using Application.Flights.SearchActive;
 using Application.Flights.Update;
 using Application.Reservations;
 using Domain;
-using Domain.Airlines;
 using Domain.Flights;
 using System.Globalization;
 
@@ -54,5 +54,24 @@ public static class FlightMapExtensions
 
         if (command.Price.HasValue && !hasReservations)
             flight.Price = command.Price.Value;
+    }
+
+    public static IQueryable<Flight> SearchFlights(this IQueryable<Flight> flights, SearchActiveFlightsQuery query)
+    {
+        if (!string.IsNullOrEmpty(query.Destination))
+            flights = flights.Where(f => f.Destination.Contains(query.Destination));
+
+        if (query.Date.HasValue)
+            flights = flights.Where(f => f.DepartureTime.Date == query.Date.Value.Date);
+
+        if (query.MinSeatsAvailable.HasValue)
+            flights = flights.Where(f => f.AvailableSeats >= query.MinSeatsAvailable.Value);
+
+        if (query.MaxPrice.HasValue)
+            flights = flights.Where(f => f.Price <= query.MaxPrice.Value);
+
+        flights = flights.Where(f => f.Status == Domain.FlightStatus.Active);
+
+        return flights;
     }
 }

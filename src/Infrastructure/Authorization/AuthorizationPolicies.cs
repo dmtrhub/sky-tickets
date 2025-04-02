@@ -13,6 +13,6 @@ public static class AuthorizationPolicies
     public static AuthorizationPolicy PassengerPolicy =>
         new AuthorizationPolicyBuilder()
             .RequireAuthenticatedUser()
-            .RequireRole("Passenger", "Administrator") //Multiple roles can be specified
+            .RequireRole("Passenger") //Multiple roles can be specified
             .Build();
 }

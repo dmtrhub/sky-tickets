@@ -4,6 +4,7 @@ using Application.Flights;
 using Domain.Airlines;
 using Domain;
 using Application.Reviews;
+using Application.Airlines.SearchAirlines;
 
 namespace Application.Airlines;
 
@@ -16,8 +17,8 @@ public static class AirlineMapExtensions
             Name = airline.Name,
             Address = airline.Address,
             ContactInfo = airline.ContactInfo,
-            ActiveFlights = airline.Flights.Where(f => f.Status is FlightStatus.Active).Select(f => f.ToFlightResponse()).ToList(),
-            ApprovedReviews = airline.Reviews.Where(r => r.Status is ReviewStatus.Approved).Select(r => r.ToReviewResponse()).ToList()
+            ActiveFlights = airline.Flights.Where(f => f.Status == FlightStatus.Active).Select(f => f.ToFlightResponse()).ToList(),
+            ApprovedReviews = airline.Reviews.Where(r => r.Status == ReviewStatus.Approved).Select(r => r.ToReviewResponse()).ToList()
         };
 
     public static Airline ToAirline(this CreateAirlineCommand command) =>
@@ -33,5 +34,16 @@ public static class AirlineMapExtensions
 
         if (!string.IsNullOrWhiteSpace(command.ContactInfo))
             airline.ContactInfo = command.ContactInfo;
+    }
+
+    public static IQueryable<Airline> SearchAirlines(this IQueryable<Airline> airlines, SearchAirlinesQuery query)
+    {
+        if (!string.IsNullOrWhiteSpace(query.Name))
+            airlines = airlines.Where(a => a.Name.Contains(query.Name));
+
+        if (!string.IsNullOrWhiteSpace(query.Address))
+            airlines = airlines.Where(a => a.Address.Contains(query.Address));
+
+        return airlines;
     }
 }

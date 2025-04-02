@@ -5,12 +5,10 @@ using Domain;
 using SharedKernel;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Reviews;
+namespace Application.Reviews.Approve;
 
-public sealed record ApproveReviewCommand(Guid Id, bool IsApproved) : ICommand<Guid>;
-
-public sealed class ApproveReviewCommandHandler(
-    IApplicationDbContext context) : ICommandHandler<ApproveReviewCommand, Guid>
+public sealed class ApproveReviewCommandHandler(IApplicationDbContext context)
+    : ICommandHandler<ApproveReviewCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(ApproveReviewCommand command, CancellationToken cancellationToken)
     {
@@ -23,7 +21,16 @@ public sealed class ApproveReviewCommandHandler(
         if (review.Status != ReviewStatus.Created)
             return Result.Failure<Guid>(ReviewErrors.NotCreated);
 
-        review.Status = command.IsApproved ? ReviewStatus.Approved : ReviewStatus.Rejected;
+        if(command.IsApproved)
+        {
+            review.Status = ReviewStatus.Approved;
+            review.Raise(new ReviewApprovedDomainEvent(review.Id));
+        }
+        else
+        {
+            review.Status = ReviewStatus.Rejected;
+            review.Raise(new ReviewRejectedDomainEvent(review.Id));
+        }
 
         await context.SaveChangesAsync(cancellationToken);
 

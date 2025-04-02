@@ -17,6 +17,8 @@ public sealed class UpdateReviewCommandHandler(IApplicationDbContext context)
 
         review.UpdateReview(command);
 
+        review.Raise(new ReviewUpdatedDomainEvent(review.Id));
+
         await context.SaveChangesAsync(cancellationToken);
 
         return review.Id;

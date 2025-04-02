@@ -1,6 +1,6 @@
 ﻿using SharedKernel;
 
-namespace Domain;
+namespace Domain.Airlines;
 
 public static class AirlineErrors
 {

@@ -1,4 +1,5 @@
 ﻿using Application.Reviews.Create;
+using Infrastructure.Authorization;
 using MediatR;
 using Presentation.Extensions;
 using Presentation.Infrastructure;
@@ -24,6 +25,7 @@ public class Create : IEndpoint
 
             return result.Match(Results.Ok, CustomResults.Problem);
         })
-        .WithTags(Tags.Reviews);
+        .WithTags(Tags.Reviews)
+        .RequireAuthorization(AuthorizationPolicies.PassengerPolicy);
     }
 }

@@ -2,7 +2,4 @@
 
 namespace Application.Airlines.SearchAirlines;
 
-public sealed record SearchAirlinesQuery(
-    string? Name,
-    string? Address,
-    string? ContactInfo) : IQuery<List<AirlineResponse>>;
+public sealed record SearchAirlinesQuery(string? Name, string? Address) : IQuery<List<AirlineResponse>>;

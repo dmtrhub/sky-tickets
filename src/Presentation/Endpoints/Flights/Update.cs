@@ -1,4 +1,5 @@
 ﻿using Application.Flights.Update;
+using Infrastructure.Authorization;
 using MediatR;
 using Presentation.Extensions;
 using Presentation.Infrastructure;
@@ -9,8 +10,6 @@ namespace Presentation.Endpoints.Flights;
 public sealed class Update : IEndpoint
 {
     public sealed record UpdateFlightRequest(
-        string Departure,
-        string Destination,
         string DepartureTime,
         string ArrivalTime,
         int AvailableSeats,
@@ -24,8 +23,6 @@ public sealed class Update : IEndpoint
         {
             var command = new UpdateFlightCommand(
                 id,
-                request.Departure,
-                request.Destination,
                 request.DepartureTime,
                 request.ArrivalTime,
                 request.AvailableSeats,
@@ -37,6 +34,7 @@ public sealed class Update : IEndpoint
 
             return result.Match(Results.Ok, CustomResults.Problem);
         })
-        .WithTags(Tags.Flights);
+        .WithTags(Tags.Flights)
+        .RequireAuthorization(AuthorizationPolicies.AdministratorPolicy);
     }
 }
