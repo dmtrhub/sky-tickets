@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
+using Application.Abstractions.Repositories;
 using Application.Extensions;
 using Domain;
 using Domain.Flights;
@@ -11,7 +12,10 @@ using SharedKernel;
 namespace Application.Reservations.Create;
 
 public sealed class CreateReservationCommandHandler(
-    IApplicationDbContext context,
+    IRepository<Reservation> reservationRepository,
+    IRepository<User> userRepository,
+    IRepository<Flight> flightRepository,
+    IUnitOfWork unitOfWork,
     IHttpContextAccessor httpContextAccessor) : ICommandHandler<CreateReservationCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(CreateReservationCommand command, CancellationToken cancellationToken)
@@ -21,12 +25,12 @@ public sealed class CreateReservationCommandHandler(
         if (userId is null)
             return Result.Failure<Guid>(UserErrors.Unauthenticated);
 
-        var user = await context.Users.FindAsync(userId, cancellationToken);
+        var user = await userRepository.GetByIdAsync(userId.Value, cancellationToken);
 
         if (user is null)
             return Result.Failure<Guid>(UserErrors.NotFound(userId.Value));
 
-        var flight = await context.Flights.FindAsync(command.FlightId, cancellationToken);
+        var flight = await flightRepository.GetByIdAsync(command.FlightId, cancellationToken);
 
         if(flight is null)
             return Result.Failure<Guid>(FlightErrors.NotFound(command.FlightId));
@@ -45,8 +49,8 @@ public sealed class CreateReservationCommandHandler(
 
         reservation.Raise(new ReservationCreatedDomainEvent(reservation.Id));
 
-        await context.Reservations.AddAsync(reservation, cancellationToken);
-        await context.SaveChangesAsync(cancellationToken);
+        await reservationRepository.AddAsync(reservation, cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return reservation.Id;
     }

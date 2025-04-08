@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
+using Application.Abstractions.Repositories;
 using Application.Extensions;
 using Domain;
 using Domain.Reservations;
@@ -11,7 +12,8 @@ using SharedKernel;
 namespace Application.Reservations.Cancel;
 
 public sealed class CancelReservationCommandHandler(
-    IApplicationDbContext context,
+    IRepository<Reservation> reservationRepository,
+    IUnitOfWork unitOfWork,
     IHttpContextAccessor httpContextAccessor) : ICommandHandler<CancelReservationCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(CancelReservationCommand command, CancellationToken cancellationToken)
@@ -20,7 +22,9 @@ public sealed class CancelReservationCommandHandler(
         if (userId is null)
             return Result.Failure<Guid>(UserErrors.Unauthenticated);
 
-        var reservation = await context.Reservations
+        var reservationQuery = await reservationRepository.AsQueryable();
+
+        var reservation = await reservationQuery
             .Where(r => r.Id == command.Id && r.UserId == userId 
                 && (r.Status == ReservationStatus.Created 
                 || r.Status == ReservationStatus.Approved))
@@ -34,10 +38,9 @@ public sealed class CancelReservationCommandHandler(
             return Result.Failure<Guid>(ReservationErrors.CannotCancel);
 
         reservation.CancelReservation();
-
         reservation.Raise(new ReservationCanceledDomainEvent(reservation.Id));
 
-        await context.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return reservation.Id;
     }

@@ -1,4 +1,4 @@
-﻿namespace Web.Api;
+﻿namespace Presentation;
 
 public static class DependencyInjection
 {

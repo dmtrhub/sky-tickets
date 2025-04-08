@@ -6,7 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Flights;
 
-public class FlightStatusUpdater(IApplicationDbContext context)
+public class FlightStatusUpdater(
+    IApplicationDbContext context,
+    IUnitOfWork unitOfWork)
 {
     public async Task UpdateFlightStatuses()
     {
@@ -21,7 +23,7 @@ public class FlightStatusUpdater(IApplicationDbContext context)
             flight.Raise(new FlightCompletedDomainEvent(flight.Id, flight.Departure, flight.Destination));
         }
 
-        await context.SaveChangesAsync();
+        await unitOfWork.SaveChangesAsync();
     }
 }
 

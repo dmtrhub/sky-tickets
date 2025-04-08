@@ -22,7 +22,7 @@ public static class FlightMapExtensions
             BookedSeats = flight.BookedSeats,
             Price = flight.Price,
             Status = flight.Status.ToString(),
-            Reservations = flight.Reservations.Select(r => r.ToReservationResponse()).ToList(),
+            Reservations = flight.Reservations.Where(r => r.Status == ReservationStatus.Approved).Select(r => r.ToReservationResponse()).ToList(),
             AirlineName = flight.Airline.Name
         };
 

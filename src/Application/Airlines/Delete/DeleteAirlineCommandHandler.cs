@@ -1,20 +1,20 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
+using Application.Abstractions.Repositories;
 using Domain;
 using Domain.Airlines;
-using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
 namespace Application.Airlines.Delete;
 
-public sealed class DeleteAirlineCommandHandler(IApplicationDbContext context)
+public sealed class DeleteAirlineCommandHandler(
+    IRepository<Airline> airlineRepository,
+    IUnitOfWork unitOfWork)
     : ICommandHandler<DeleteAirlineCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(DeleteAirlineCommand command, CancellationToken cancellationToken)
     {
-        var airline = await context.Airlines
-            .Include(a => a.Flights)
-            .FirstOrDefaultAsync(a => a.Id == command.Id, cancellationToken);
+        var airline = await airlineRepository.GetByIdAsync(command.Id, cancellationToken);
 
         if (airline is null)
             return Result.Failure<Guid>(AirlineErrors.NotFound(command.Id));
@@ -25,8 +25,9 @@ public sealed class DeleteAirlineCommandHandler(IApplicationDbContext context)
 
         airline.Raise(new AirlineDeletedDomainEvent(airline.Name));
 
-        context.Airlines.Remove(airline);
-        await context.SaveChangesAsync(cancellationToken);
+        // Korišćenje DbContext za brisanje
+        airlineRepository.Remove(airline);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return airline.Id;
     }

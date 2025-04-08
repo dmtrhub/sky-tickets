@@ -1,5 +1,5 @@
-﻿using Application.Abstractions.Data;
-using Application.Abstractions.Messaging;
+﻿using Application.Abstractions.Messaging;
+using Application.Abstractions.Repositories;
 using Application.Extensions;
 using Domain.Reviews;
 using Domain.Users;
@@ -10,7 +10,7 @@ using SharedKernel;
 namespace Application.Reviews.GetUserReviews;
 
 public sealed class GetUserReviewsQueryHandler(
-    IApplicationDbContext context,
+    IRepository<Review> reviewRepository,
     IHttpContextAccessor httpContextAccessor) : IQueryHandler<GetUserReviewsQuery, List<ReviewResponse>>
 {
     public async Task<Result<List<ReviewResponse>>> Handle(GetUserReviewsQuery query, CancellationToken cancellationToken)
@@ -20,14 +20,16 @@ public sealed class GetUserReviewsQueryHandler(
         if (userId is null)
             return Result.Failure<List<ReviewResponse>>(UserErrors.Unauthenticated);
 
-        var reviews = await context.Reviews
+        var reviewQuery = await reviewRepository.AsQueryable();
+
+        var reviews = await reviewQuery
             .Where(r => r.UserId == userId)
             .Include(r => r.User)
             .Include(r => r.Airline)
             .Select(r => r.ToReviewResponse())
             .ToListAsync(cancellationToken);
 
-        if (reviews is null)
+        if (reviews.Count == 0)
             return Result.Failure<List<ReviewResponse>>(ReviewErrors.NoReviewsFound);
 
         return reviews;

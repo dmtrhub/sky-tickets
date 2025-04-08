@@ -1,17 +1,19 @@
-﻿using Application.Abstractions.Data;
-using Application.Abstractions.Messaging;
+﻿using Application.Abstractions.Messaging;
+using Application.Abstractions.Repositories;
 using Domain.Reviews;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
 namespace Application.Reviews.GetById;
 
-public sealed class GetReviewByIdQueryHandler(IApplicationDbContext context)
+public sealed class GetReviewByIdQueryHandler(IRepository<Review> reviewRepository)
     : IQueryHandler<GetReviewByIdQuery, ReviewResponse>
 {
     public async Task<Result<ReviewResponse>> Handle(GetReviewByIdQuery query, CancellationToken cancellationToken)
     {
-        var review = await context.Reviews
+        var reviewQuery = await reviewRepository.AsQueryable();
+
+        var review = await reviewQuery
             .Where(r => r.Id == query.Id)
             .Include(r => r.User)
             .Include(r => r.Airline)

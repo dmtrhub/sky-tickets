@@ -1,17 +1,19 @@
-﻿using Application.Abstractions.Data;
-using Application.Abstractions.Messaging;
+﻿using Application.Abstractions.Messaging;
+using Application.Abstractions.Repositories;
 using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
 namespace Application.Users.GetById;
 
-public sealed class GetUserByIdQueryHandler(IApplicationDbContext context)
+public sealed class GetUserByIdQueryHandler(IRepository<User> userRepository)
     : IQueryHandler<GetUserByIdQuery, UserResponse>
 {
     public async Task<Result<UserResponse>> Handle(GetUserByIdQuery query, CancellationToken cancellationToken)
     {
-        var user = await context.Users
+        var userQuery = await userRepository.AsQueryable();
+
+        var user = await userQuery
             .Where(u => u.Id == query.UserId)
             .Include(u => u.Reviews)
             .Include(u => u.Reservations)

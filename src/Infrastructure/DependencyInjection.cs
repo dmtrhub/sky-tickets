@@ -1,7 +1,9 @@
 ﻿using Application.Abstractions.Authentication;
 using Application.Abstractions.Data;
+using Application.Abstractions.Repositories;
 using Infrastructure.Authentication;
 using Infrastructure.Database;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +29,8 @@ public static class DependencyInjection
             options.UseSqlServer(configuration.GetConnectionString("Database")));
 
         services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
+        services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
+        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
         return services;
     }

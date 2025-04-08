@@ -1,6 +1,6 @@
 ﻿using Application.Abstractions.Authentication;
-using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
+using Application.Abstractions.Repositories;
 using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
@@ -8,17 +8,21 @@ using SharedKernel;
 namespace Application.Users.Login;
 
 public class LoginUserCommandHandler(
-    IApplicationDbContext context,
+    IRepository<User> userRepository,
     IPasswordHasher passwordHasher,
     ITokenProvider tokenProvider) : ICommandHandler<LoginUserCommand, string>
 {
     public async Task<Result<string>> Handle(LoginUserCommand command, CancellationToken cancellationToken)
     {
-        var user = await context.Users
-            .AsNoTracking()
-            .SingleOrDefaultAsync(u => u.Email == command.Email, cancellationToken);
+        var userQuery = await userRepository.AsQueryable();
 
-        if(user is null) 
+        var user = await userQuery
+            .Include(u => u.Reservations)
+            .ThenInclude(r => r.Flight)
+            .ThenInclude(f => f.Airline)
+            .FirstOrDefaultAsync(u => u.Email == command.Email, cancellationToken);
+
+        if (user is null) 
             return Result.Failure<string>(UserErrors.NotFoundByEmail);
 
         var verified = passwordHasher.Verify(command.Password, user.PasswordHash);
@@ -27,7 +31,6 @@ public class LoginUserCommandHandler(
             return Result.Failure<string>(UserErrors.InvalidCredentials);
 
         var token = tokenProvider.Create(user);
-
         user.Raise(new UserLoggedInDomainEvent(user.Id));
 
         return token;

@@ -1,5 +1,5 @@
-﻿using Application.Abstractions.Data;
-using Application.Abstractions.Messaging;
+﻿using Application.Abstractions.Messaging;
+using Application.Abstractions.Repositories;
 using Application.Extensions;
 using Domain.Users;
 using Microsoft.AspNetCore.Http;
@@ -9,7 +9,7 @@ using SharedKernel;
 namespace Application.Users.GetMyProfile;
 
 public sealed class GetMyProfileQueryHandler(
-    IApplicationDbContext context,
+    IRepository<User> userRepository,
     IHttpContextAccessor httpContextAccessor) : IQueryHandler<GetMyProfileQuery, UserResponse>
 {
     public async Task<Result<UserResponse>> Handle(GetMyProfileQuery query, CancellationToken cancellationToken)
@@ -19,7 +19,9 @@ public sealed class GetMyProfileQueryHandler(
         if (userId is null)
             return Result.Failure<UserResponse>(UserErrors.Unauthenticated);
 
-        var user = await context.Users
+        var userQuery = await userRepository.AsQueryable();
+
+        var user = await userQuery
             .Where(u => u.Id == userId)
             .Include(u => u.Reviews)
             .Include(u => u.Reservations)

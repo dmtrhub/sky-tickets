@@ -1,17 +1,17 @@
-﻿using Application.Abstractions.Data;
-using Application.Abstractions.Messaging;
+﻿using Application.Abstractions.Messaging;
+using Application.Abstractions.Repositories;
 using Domain.Flights;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
 namespace Application.Flights.SearchActive;
 
-public sealed class SearchActiveFlightsQueryHandler(IApplicationDbContext context)
+public sealed class SearchActiveFlightsQueryHandler(IRepository<Flight> flightRepository)
     : IQueryHandler<SearchActiveFlightsQuery, List<FlightResponse>>
 {
     public async Task<Result<List<FlightResponse>>> Handle(SearchActiveFlightsQuery query, CancellationToken cancellationToken)
     {
-        var flightsQuery = context.Flights.AsQueryable();
+        var flightsQuery = await flightRepository.AsQueryable();
    
         var flights = await flightsQuery
             .Include(f => f.Airline)
@@ -20,7 +20,7 @@ public sealed class SearchActiveFlightsQueryHandler(IApplicationDbContext contex
             .Select(f => f.ToFlightResponse())
             .ToListAsync(cancellationToken);
 
-        if (flights is null)
+        if (flights.Count == 0)
             return Result.Failure<List<FlightResponse>>(FlightErrors.NoFlightsFound);
 
         return flights;

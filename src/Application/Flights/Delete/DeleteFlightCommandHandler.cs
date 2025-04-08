@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
+using Application.Abstractions.Repositories;
 using Domain;
 using Domain.Flights;
 using Microsoft.EntityFrameworkCore;
@@ -7,15 +8,14 @@ using SharedKernel;
 
 namespace Application.Flights.Delete;
 
-public sealed class DeleteFlightCommandHandler(IApplicationDbContext context)
+public sealed class DeleteFlightCommandHandler(
+    IRepository<Flight> flightRepository,
+    IUnitOfWork unitOfWork)
     : ICommandHandler<DeleteFlightCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(DeleteFlightCommand command, CancellationToken cancellationToken)
     {
-        var flight = await context.Flights
-            .Where(f => f.Id == command.Id)
-            .Include(f => f.Reservations)
-            .FirstOrDefaultAsync(cancellationToken);
+        var flight = await flightRepository.GetByIdAsync(command.Id, cancellationToken);
 
         if (flight is null)
             return Result.Failure<Guid>(FlightErrors.NotFound(command.Id));
@@ -28,8 +28,8 @@ public sealed class DeleteFlightCommandHandler(IApplicationDbContext context)
 
         flight.Raise(new FlightDeletedDomainEvent(flight.Id, flight.Departure, flight.Destination));
 
-        context.Flights.Remove(flight);
-        await context.SaveChangesAsync(cancellationToken);
+        flightRepository.Remove(flight);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return flight.Id;
     }

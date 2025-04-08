@@ -1,21 +1,21 @@
-﻿using Application.Abstractions.Data;
-using Application.Abstractions.Messaging;
+﻿using Application.Abstractions.Messaging;
+using Application.Abstractions.Repositories;
 using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
 namespace Application.Users.SearchUsers;
 
-public sealed class SearchUsersQueryHandler(IApplicationDbContext context) 
+public sealed class SearchUsersQueryHandler(IRepository<User> userRepository) 
     : IQueryHandler<SearchUsersQuery, List<UserResponse>>
 {
     public async Task<Result<List<UserResponse>>> Handle(SearchUsersQuery query, CancellationToken cancellationToken)
     {
-        var usersQuery = context.Users.AsQueryable();
+        var userQuery = await userRepository.AsQueryable();
 
-        usersQuery = usersQuery.SearchUsers(query);       
+        userQuery = userQuery.SearchUsers(query);       
 
-        var users = await usersQuery
+        var users = await userQuery
             .Select(u => u.ToUserResponse())
             .ToListAsync(cancellationToken);
 

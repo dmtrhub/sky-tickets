@@ -1,5 +1,5 @@
-﻿using Application.Abstractions.Data;
-using Application.Abstractions.Messaging;
+﻿using Application.Abstractions.Messaging;
+using Application.Abstractions.Repositories;
 using Application.Extensions;
 using Domain.Reservations;
 using Domain.Users;
@@ -10,7 +10,7 @@ using SharedKernel;
 namespace Application.Reservations.GetUserReservations;
 
 public sealed class GetUserReservationsQueryHandler(
-    IApplicationDbContext context,
+    IRepository<Reservation> reservationRepository,
     IHttpContextAccessor httpContextAccessor)
     : IQueryHandler<GetUserReservationsQuery, List<ReservationResponse>>
 {
@@ -21,7 +21,9 @@ public sealed class GetUserReservationsQueryHandler(
         if (userId is null)
             return Result.Failure<List<ReservationResponse>>(UserErrors.Unauthenticated);
 
-        var reservations = await context.Reservations
+        var reservationQuery = await reservationRepository.AsQueryable();   
+
+        var reservations = await reservationQuery
             .Where(r => r.UserId == userId)
             .Include(r => r.User)
             .Include(r => r.Flight)
@@ -29,7 +31,7 @@ public sealed class GetUserReservationsQueryHandler(
             .Select(r => r.ToReservationResponse())
             .ToListAsync(cancellationToken);
 
-        if (reservations is null)
+        if (reservations.Count == 0)
             return Result.Failure<List<ReservationResponse>>(ReservationErrors.NoReservationsFound);
 
         return reservations;

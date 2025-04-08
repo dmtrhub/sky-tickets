@@ -1,0 +1,8 @@
+G:\PORTFOLIO\SkyTickets\tests\ArchitectureTests\ArchitectureTests\bin\Debug\net9.0\.msCoverageSourceRootsMapping_ArchitectureTests
+G:\PORTFOLIO\SkyTickets\tests\ArchitectureTests\ArchitectureTests\bin\Debug\net9.0\CoverletSourceRootsMapping_ArchitectureTests
+G:\PORTFOLIO\SkyTickets\tests\ArchitectureTests\ArchitectureTests\obj\Debug\net9.0\ArchitectureTests.csproj.AssemblyReference.cache
+G:\PORTFOLIO\SkyTickets\tests\ArchitectureTests\ArchitectureTests\obj\Debug\net9.0\ArchitectureTests.GeneratedMSBuildEditorConfig.editorconfig
+G:\PORTFOLIO\SkyTickets\tests\ArchitectureTests\ArchitectureTests\obj\Debug\net9.0\ArchitectureTests.AssemblyInfoInputs.cache
+G:\PORTFOLIO\SkyTickets\tests\ArchitectureTests\ArchitectureTests\obj\Debug\net9.0\ArchitectureTests.AssemblyInfo.cs
+G:\PORTFOLIO\SkyTickets\tests\ArchitectureTests\ArchitectureTests\obj\Debug\net9.0\ArchitectureTests.csproj.CoreCompileInputs.cache
+G:\PORTFOLIO\SkyTickets\tests\ArchitectureTests\ArchitectureTests\obj\Debug\net9.0\ArchitectureTests.sourcelink.json

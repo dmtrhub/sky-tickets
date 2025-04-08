@@ -3,17 +3,18 @@ using Application.Abstractions.Messaging;
 using Domain.Reviews;
 using Domain;
 using SharedKernel;
-using Microsoft.EntityFrameworkCore;
+using Application.Abstractions.Repositories;
 
 namespace Application.Reviews.Approve;
 
-public sealed class ApproveReviewCommandHandler(IApplicationDbContext context)
+public sealed class ApproveReviewCommandHandler(
+    IRepository<Review> reviewRepository,
+    IUnitOfWork unitOfWork)
     : ICommandHandler<ApproveReviewCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(ApproveReviewCommand command, CancellationToken cancellationToken)
     {
-        var review = await context.Reviews
-            .FirstOrDefaultAsync(r => r.Id == command.Id, cancellationToken);
+        var review = await reviewRepository.GetByIdAsync(command.Id, cancellationToken);
 
         if (review is null)
             return Result.Failure<Guid>(ReviewErrors.NotFound(command.Id));
@@ -32,7 +33,7 @@ public sealed class ApproveReviewCommandHandler(IApplicationDbContext context)
             review.Raise(new ReviewRejectedDomainEvent(review.Id));
         }
 
-        await context.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return review.Id;
     }

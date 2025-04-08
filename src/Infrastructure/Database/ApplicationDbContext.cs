@@ -13,7 +13,7 @@ namespace Infrastructure.Database;
 public sealed class ApplicationDbContext(
     DbContextOptions<ApplicationDbContext> options,
     IMediator mediator)
-    : DbContext(options), IApplicationDbContext
+    : DbContext(options), IApplicationDbContext, IUnitOfWork
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Flight> Flights { get; set; }

@@ -5,6 +5,7 @@ using Domain.Airlines;
 using Domain;
 using Application.Reviews;
 using Application.Airlines.SearchAirlines;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Airlines;
 
@@ -39,10 +40,10 @@ public static class AirlineMapExtensions
     public static IQueryable<Airline> SearchAirlines(this IQueryable<Airline> airlines, SearchAirlinesQuery query)
     {
         if (!string.IsNullOrWhiteSpace(query.Name))
-            airlines = airlines.Where(a => a.Name.Contains(query.Name));
+            airlines = airlines.Where(a => EF.Functions.Like(a.Name, $"%{query.Name}%"));
 
         if (!string.IsNullOrWhiteSpace(query.Address))
-            airlines = airlines.Where(a => a.Address.Contains(query.Address));
+            airlines = airlines.Where(a => EF.Functions.Like(a.Address, $"%{query.Address}%"));
 
         return airlines;
     }

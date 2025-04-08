@@ -1,17 +1,19 @@
-﻿using Application.Abstractions.Data;
-using Application.Abstractions.Messaging;
+﻿using Application.Abstractions.Messaging;
+using Application.Abstractions.Repositories;
 using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
 namespace Application.Users.GetByEmail;
 
-public sealed class GetUserByEmailQueryHandler(IApplicationDbContext context) 
+public sealed class GetUserByEmailQueryHandler(IRepository<User> userRepository) 
     : IQueryHandler<GetUserByEmailQuery, UserResponse>
 {
     public async Task<Result<UserResponse>> Handle(GetUserByEmailQuery query, CancellationToken cancellationToken)
     {
-        var user = await context.Users
+        var userQuery = await userRepository.AsQueryable();
+
+        var user = await userQuery
             .Where(u => u.Email == query.Email)
             .Include(u => u.Reviews)
             .Include(u => u.Reservations)

@@ -1,7 +1,9 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
+using Application.Abstractions.Repositories;
 using Application.Extensions;
 using Domain;
+using Domain.Reservations;
 using Domain.Reviews;
 using Domain.Users;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +13,10 @@ using SharedKernel;
 namespace Application.Reviews.Create;
 
 public sealed class CreateReviewCommandHandler(
-    IApplicationDbContext context,
+    IRepository<Review> reviewRepository,
+    IRepository<User> userRepository,
+    IRepository<Reservation> reservationRepository,
+    IUnitOfWork unitOfWork,
     IHttpContextAccessor httpContextAccessor) : ICommandHandler<CreateReviewCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(CreateReviewCommand command, CancellationToken cancellationToken)
@@ -21,12 +26,13 @@ public sealed class CreateReviewCommandHandler(
         if (userId is null)
             return Result.Failure<Guid>(UserErrors.Unauthenticated);
 
-        var user = await context.Users.FindAsync(userId, cancellationToken);
+        var user = await userRepository.GetByIdAsync(userId.Value, cancellationToken);
 
         if (user is null)
             return Result.Failure<Guid>(UserErrors.NotFound(userId.Value));
 
-        bool hasCompletedFlight = await context.Reservations
+        var reservationQuery = await reservationRepository.AsQueryable();
+        bool hasCompletedFlight = await reservationQuery
             .Include(r => r.Flight)
             .ThenInclude(f => f.Airline)
             .AnyAsync(r => r.UserId == userId
@@ -37,18 +43,17 @@ public sealed class CreateReviewCommandHandler(
         if (!hasCompletedFlight)
             return Result.Failure<Guid>(ReviewErrors.NoCompletedFlightForAirline(command.AirlineId));
 
-        bool reviewExists = await context.Reviews
+        bool reviewExists = await reviewRepository
             .AnyAsync(r => r.UserId == userId && r.AirlineId == command.AirlineId, cancellationToken);
 
         if (reviewExists)
             return Result.Failure<Guid>(ReviewErrors.AlreadyReviewed(command.AirlineId));
 
         var review = command.ToReview(userId.Value);
-
         review.Raise(new ReviewCreatedDomainEvent(review.Id));
 
-        await context.Reviews.AddAsync(review, cancellationToken);
-        await context.SaveChangesAsync(cancellationToken);
+        await reviewRepository.AddAsync(review, cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return review.Id;
     }

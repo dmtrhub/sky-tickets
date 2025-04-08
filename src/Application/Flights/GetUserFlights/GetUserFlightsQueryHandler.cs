@@ -1,5 +1,5 @@
-﻿using Application.Abstractions.Data;
-using Application.Abstractions.Messaging;
+﻿using Application.Abstractions.Messaging;
+using Application.Abstractions.Repositories;
 using Application.Extensions;
 using Domain;
 using Domain.Flights;
@@ -11,7 +11,7 @@ using SharedKernel;
 namespace Application.Flights.GetUserFlights;
 
 public sealed class GetUserFlightsQueryHandler(
-    IApplicationDbContext context,
+    IRepository<Flight> flightRepository,
     IHttpContextAccessor httpContextAccessor) : IQueryHandler<GetUserFlightsQuery, List<FlightResponse>>
 {
     public async Task<Result<List<FlightResponse>>> Handle(GetUserFlightsQuery query, CancellationToken cancellationToken)
@@ -20,7 +20,9 @@ public sealed class GetUserFlightsQueryHandler(
         if (userId is null)
             return Result.Failure<List<FlightResponse>>(UserErrors.Unauthenticated);
 
-        var flights = await context.Flights
+        var flightsQuery = await flightRepository.AsQueryable();
+
+        var flights = await flightsQuery
             .Where(f => f.Status == FlightStatus.Active ||
                 f.Reservations.Any(r => r.UserId == userId))
             .Include(f => f.Airline)
@@ -29,7 +31,7 @@ public sealed class GetUserFlightsQueryHandler(
             .Select(f => f.ToFlightResponse())
             .ToListAsync(cancellationToken);
 
-        if (flights is null)
+        if (flights.Count == 0)
             return Result.Failure<List<FlightResponse>>(FlightErrors.NoFlightsFound);
 
         return flights;
