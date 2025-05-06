@@ -3,7 +3,6 @@ using Application.Abstractions.Messaging;
 using Application.Abstractions.Repositories;
 using Domain;
 using Domain.Flights;
-using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
 namespace Application.Flights.Delete;

@@ -32,16 +32,16 @@ public sealed class CreateReservationCommandHandler(
 
         var flight = await flightRepository.GetByIdAsync(command.FlightId, cancellationToken);
 
-        if(flight is null)
+        if (flight is null)
             return Result.Failure<Guid>(FlightErrors.NotFound(command.FlightId));
 
-        if(flight.Status is not FlightStatus.Active)
+        if (flight.Status is not FlightStatus.Active)
             return Result.Failure<Guid>(FlightErrors.NotActive(flight.Id));
 
-        if(flight.AvailableSeats < command.PassengerCount)
+        if (flight.AvailableSeats < command.PassengerCount)
             return Result.Failure<Guid>(FlightErrors.NotEnoughSeats);
 
-        var totalPrice = flight.Price * command.PassengerCount;      
+        var totalPrice = flight.Price * command.PassengerCount;
         var reservation = command.ToReservation(userId.Value, totalPrice);
 
         flight.BookedSeats += command.PassengerCount;

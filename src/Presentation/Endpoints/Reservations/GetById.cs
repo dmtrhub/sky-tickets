@@ -12,7 +12,7 @@ public class GetById : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/reservations/{id}", async (Guid id ,ISender sender, CancellationToken cancellationToken) =>
+        app.MapGet("/reservations/{id}", async (Guid id, ISender sender, CancellationToken cancellationToken) =>
         {
             var query = new GetReservationByIdQuery(id);
 

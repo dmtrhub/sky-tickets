@@ -12,7 +12,7 @@ public sealed class SearchActiveFlightsQueryHandler(IRepository<Flight> flightRe
     public async Task<Result<List<FlightResponse>>> Handle(SearchActiveFlightsQuery query, CancellationToken cancellationToken)
     {
         var flightsQuery = await flightRepository.AsQueryable();
-   
+
         var flights = await flightsQuery
             .Include(f => f.Airline)
             .Include(f => f.Reservations)

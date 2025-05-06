@@ -1,9 +1,9 @@
 ﻿using Application.Users.Delete;
+using Infrastructure.Authorization;
 using MediatR;
 using Presentation.Extensions;
 using Presentation.Infrastructure;
 using SharedKernel;
-using Infrastructure.Authorization;
 
 namespace Presentation.Endpoints.Users;
 

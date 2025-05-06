@@ -21,7 +21,7 @@ public sealed class GetUserReservationsQueryHandler(
         if (userId is null)
             return Result.Failure<List<ReservationResponse>>(UserErrors.Unauthenticated);
 
-        var reservationQuery = await reservationRepository.AsQueryable();   
+        var reservationQuery = await reservationRepository.AsQueryable();
 
         var reservations = await reservationQuery
             .Where(r => r.UserId == userId)

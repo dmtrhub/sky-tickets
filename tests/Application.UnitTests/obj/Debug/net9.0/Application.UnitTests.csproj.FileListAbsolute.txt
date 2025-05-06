@@ -144,3 +144,6 @@ G:\PORTFOLIO\SkyTickets\tests\Application.UnitTests\obj\Debug\net9.0\refint\Appl
 G:\PORTFOLIO\SkyTickets\tests\Application.UnitTests\obj\Debug\net9.0\Application.UnitTests.pdb
 G:\PORTFOLIO\SkyTickets\tests\Application.UnitTests\obj\Debug\net9.0\Application.UnitTests.genruntimeconfig.cache
 G:\PORTFOLIO\SkyTickets\tests\Application.UnitTests\obj\Debug\net9.0\ref\Application.UnitTests.dll
+G:\PORTFOLIO\SkyTickets\tests\Application.UnitTests\bin\Debug\net9.0\MockQueryable.Core.dll
+G:\PORTFOLIO\SkyTickets\tests\Application.UnitTests\bin\Debug\net9.0\MockQueryable.EntityFrameworkCore.dll
+G:\PORTFOLIO\SkyTickets\tests\Application.UnitTests\bin\Debug\net9.0\MockQueryable.Moq.dll

@@ -13,7 +13,7 @@ builder.Services
     .AddApplication(builder.Configuration)
     .AddPresentation()
     .AddInfrastructure(builder.Configuration);
-    
+
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();

@@ -6,7 +6,7 @@ using SharedKernel;
 
 namespace Application.Users.GetByEmail;
 
-public sealed class GetUserByEmailQueryHandler(IRepository<User> userRepository) 
+public sealed class GetUserByEmailQueryHandler(IRepository<User> userRepository)
     : IQueryHandler<GetUserByEmailQuery, UserResponse>
 {
     public async Task<Result<UserResponse>> Handle(GetUserByEmailQuery query, CancellationToken cancellationToken)
@@ -22,7 +22,7 @@ public sealed class GetUserByEmailQueryHandler(IRepository<User> userRepository)
             .Select(u => u.ToUserResponse())
             .FirstOrDefaultAsync(cancellationToken);
 
-        if(user is null)
+        if (user is null)
             return Result.Failure<UserResponse>(UserErrors.NotFoundByEmail);
 
         return user;

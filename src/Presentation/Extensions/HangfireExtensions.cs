@@ -5,7 +5,7 @@ namespace Presentation.Extensions
 {
     public static class HangfireExtensions
     {
-        public static void UseHangfireJobs(this IApplicationBuilder app) => 
+        public static void UseHangfireJobs(this IApplicationBuilder app) =>
             RecurringJob.AddOrUpdate<FlightStatusUpdater>(
                 "update-flight-statuses",
                 updater => updater.UpdateFlightStatuses(),

@@ -6,14 +6,14 @@ using SharedKernel;
 
 namespace Application.Users.SearchUsers;
 
-public sealed class SearchUsersQueryHandler(IRepository<User> userRepository) 
+public sealed class SearchUsersQueryHandler(IRepository<User> userRepository)
     : IQueryHandler<SearchUsersQuery, List<UserResponse>>
 {
     public async Task<Result<List<UserResponse>>> Handle(SearchUsersQuery query, CancellationToken cancellationToken)
     {
         var userQuery = await userRepository.AsQueryable();
 
-        userQuery = userQuery.SearchUsers(query);       
+        userQuery = userQuery.SearchUsers(query);
 
         var users = await userQuery
             .Select(u => u.ToUserResponse())

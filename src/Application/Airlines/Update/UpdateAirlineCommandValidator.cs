@@ -2,7 +2,7 @@
 
 namespace Application.Airlines.Update;
 
-internal sealed class UpdateAirlineCommandValidator : AbstractValidator<UpdateAirlineCommand>
+public sealed class UpdateAirlineCommandValidator : AbstractValidator<UpdateAirlineCommand>
 {
     public UpdateAirlineCommandValidator()
     {

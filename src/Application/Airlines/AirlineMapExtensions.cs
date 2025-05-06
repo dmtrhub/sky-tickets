@@ -1,10 +1,10 @@
 ﻿using Application.Airlines.Create;
+using Application.Airlines.SearchAirlines;
 using Application.Airlines.Update;
 using Application.Flights;
-using Domain.Airlines;
-using Domain;
 using Application.Reviews;
-using Application.Airlines.SearchAirlines;
+using Domain;
+using Domain.Airlines;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Airlines;

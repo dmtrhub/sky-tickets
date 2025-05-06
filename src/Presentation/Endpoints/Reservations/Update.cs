@@ -15,7 +15,7 @@ public class Update : IEndpoint
 
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("/reservations/{id}", async (Guid id, UpdateReservationRequest request ,ISender sender, CancellationToken cancellationToken) =>
+        app.MapPut("/reservations/{id}", async (Guid id, UpdateReservationRequest request, ISender sender, CancellationToken cancellationToken) =>
         {
             var command = new UpdateReservationCommand(id, request.PassengerCount, request.Status);
 

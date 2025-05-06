@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Airlines.Delete;
 
-internal sealed class AirlineDeletedDomainEventHandler : INotificationHandler<AirlineDeletedDomainEvent>
+public sealed class AirlineDeletedDomainEventHandler : INotificationHandler<AirlineDeletedDomainEvent>
 {
     public Task Handle(AirlineDeletedDomainEvent notification, CancellationToken cancellationToken)
     {

@@ -22,12 +22,12 @@ public class LoginUserCommandHandler(
             .ThenInclude(f => f.Airline)
             .FirstOrDefaultAsync(u => u.Email == command.Email, cancellationToken);
 
-        if (user is null) 
+        if (user is null)
             return Result.Failure<string>(UserErrors.NotFoundByEmail);
 
         var verified = passwordHasher.Verify(command.Password, user.PasswordHash);
 
-        if(!verified)
+        if (!verified)
             return Result.Failure<string>(UserErrors.InvalidCredentials);
 
         var token = tokenProvider.Create(user);

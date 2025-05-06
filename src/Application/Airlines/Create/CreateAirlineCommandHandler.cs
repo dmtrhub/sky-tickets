@@ -8,7 +8,7 @@ namespace Application.Airlines.Create;
 
 public sealed class CreateAirlineCommandHandler(
     IRepository<Airline> airlineRepository,
-    IUnitOfWork unitOfWork) 
+    IUnitOfWork unitOfWork)
     : ICommandHandler<CreateAirlineCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(CreateAirlineCommand command, CancellationToken cancellationToken)

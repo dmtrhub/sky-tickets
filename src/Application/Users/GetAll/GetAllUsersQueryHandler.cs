@@ -6,7 +6,7 @@ using SharedKernel;
 
 namespace Application.Users.GetAll;
 
-public sealed class GetAllUsersQueryHandler(IRepository<User> userRepository) 
+public sealed class GetAllUsersQueryHandler(IRepository<User> userRepository)
     : IQueryHandler<GetAllUsersQuery, List<UserResponse>>
 {
     public async Task<Result<List<UserResponse>>> Handle(GetAllUsersQuery query, CancellationToken cancellationToken)

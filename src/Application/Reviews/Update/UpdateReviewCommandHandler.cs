@@ -15,7 +15,7 @@ public sealed class UpdateReviewCommandHandler(
     {
         var review = await reviewRepository.GetByIdAsync(command.Id, cancellationToken);
 
-        if(review is null)
+        if (review is null)
             return Result.Failure<Guid>(ReviewErrors.NotFound(command.Id));
 
         review.UpdateReview(command);

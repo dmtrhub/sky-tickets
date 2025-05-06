@@ -1,5 +1,4 @@
-﻿using Application.Abstractions.Data;
-using Application.Abstractions.Messaging;
+﻿using Application.Abstractions.Messaging;
 using Application.Abstractions.Repositories;
 using Domain.Reservations;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +6,7 @@ using SharedKernel;
 
 namespace Application.Reservations.GetAll;
 
-public sealed class GetAllReservationsQueryHandler(IRepository<Reservation> reservationRepository) 
+public sealed class GetAllReservationsQueryHandler(IRepository<Reservation> reservationRepository)
     : IQueryHandler<GetAllReservationsQuery, List<ReservationResponse>>
 {
     public async Task<Result<List<ReservationResponse>>> Handle(GetAllReservationsQuery query, CancellationToken cancellationToken)
@@ -21,7 +20,7 @@ public sealed class GetAllReservationsQueryHandler(IRepository<Reservation> rese
             .Select(r => r.ToReservationResponse())
             .ToListAsync(cancellationToken);
 
-        if(reservations.Count == 0)
+        if (reservations.Count == 0)
             return Result.Failure<List<ReservationResponse>>(ReservationErrors.NoReservationsFound);
 
         return reservations;

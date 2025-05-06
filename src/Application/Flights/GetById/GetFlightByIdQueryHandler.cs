@@ -22,7 +22,7 @@ public sealed class GetFlightByIdQueryHandler(
             .Select(f => f.ToFlightResponse())
             .FirstOrDefaultAsync(cancellationToken);
 
-        if(flight is null)
+        if (flight is null)
             return Result.Failure<FlightResponse>(FlightErrors.NotFound(query.Id));
 
         return flight;

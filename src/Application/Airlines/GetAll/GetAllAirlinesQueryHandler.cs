@@ -6,7 +6,7 @@ using SharedKernel;
 
 namespace Application.Airlines.GetAll;
 
-public sealed class GetAllAirlinesQueryHandler(IRepository<Airline> airlineRepository) 
+public sealed class GetAllAirlinesQueryHandler(IRepository<Airline> airlineRepository)
     : IQueryHandler<GetAllAirlinesQuery, List<AirlineResponse>>
 {
     public async Task<Result<List<AirlineResponse>>> Handle(GetAllAirlinesQuery query, CancellationToken cancellationToken)

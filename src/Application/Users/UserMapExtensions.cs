@@ -38,16 +38,16 @@ public static class UserMapExtensions
 
     public static void UpdateUser(this User user, UpdateUserCommand command, IPasswordHasher passwordHasher)
     {
-        if(!string.IsNullOrEmpty(command.FirstName))
+        if (!string.IsNullOrEmpty(command.FirstName))
             user.FirstName = command.FirstName;
 
-        if(!string.IsNullOrEmpty(command.LastName))
+        if (!string.IsNullOrEmpty(command.LastName))
             user.LastName = command.LastName;
 
         if (!string.IsNullOrEmpty(command.Email))
             user.Email = command.Email;
 
-        if(!string.IsNullOrEmpty(command.Password))
+        if (!string.IsNullOrEmpty(command.Password))
             user.PasswordHash = passwordHasher.Hash(command.Password);
 
         if (!string.IsNullOrEmpty(command.DateOfBirth))

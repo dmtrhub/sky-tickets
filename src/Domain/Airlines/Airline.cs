@@ -6,7 +6,7 @@ namespace Domain.Airlines;
 
 public sealed class Airline : Entity
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; private set; }
     public string Name { get; set; }
     public string Address { get; set; }
     public string ContactInfo { get; set; }
@@ -23,4 +23,9 @@ public sealed class Airline : Entity
 
     public static Airline Create(string name, string address, string contactInfo) =>
         new(name, address, contactInfo);
+
+    internal void SetId(Guid id)
+    {
+        Id = id;
+    }
 }

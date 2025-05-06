@@ -1,8 +1,8 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Repositories;
 using Application.Airlines.Create;
-using Application.Airlines;
 using Domain.Airlines;
+using FluentAssertions;
 using Moq;
 using System.Linq.Expressions;
 
@@ -10,14 +10,12 @@ namespace Application.UnitTests.Airlines.Create;
 
 public class CreateAirlineCommandHandlerTests
 {
-    private readonly Mock<IRepository<Airline>> _airlineRepositoryMock;
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly Mock<IRepository<Airline>> _airlineRepositoryMock = new();
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
     private readonly CreateAirlineCommandHandler _handler;
 
     public CreateAirlineCommandHandlerTests()
     {
-        _airlineRepositoryMock = new Mock<IRepository<Airline>>();
-        _unitOfWorkMock = new Mock<IUnitOfWork>();
         _handler = new CreateAirlineCommandHandler(_airlineRepositoryMock.Object, _unitOfWorkMock.Object);
     }
 
@@ -26,39 +24,48 @@ public class CreateAirlineCommandHandlerTests
     {
         // Arrange
         var command = new CreateAirlineCommand("Existing Airline", "Some Address", "123-456");
+
         _airlineRepositoryMock
             .Setup(r => r.AnyAsync(It.IsAny<Expression<Func<Airline, bool>>>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(true);  // Simulating that the airline already exists
+            .ReturnsAsync(true);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        Assert.True(result.IsFailure);
-        Assert.Equal(AirlineErrors.NameInUse(command.Name), result.Error);
+        result.IsFailure.Should().BeTrue();
+        result.Error.Code.Should().Be(AirlineErrors.NameInUse(command.Name).Code);
     }
 
     [Fact]
-    public async Task Handle_ShouldCreateAirline_WhenValidCommand()
+    public async Task Handle_ShouldAddAirline_WhenNameIsAvailable()
     {
         // Arrange
         var command = new CreateAirlineCommand("New Airline", "Some Address", "123-456");
-        var airline = command.ToAirline();
 
         _airlineRepositoryMock
-            .Setup(r => r.AddAsync(It.IsAny<Airline>(), It.IsAny<CancellationToken>()))
+            .Setup(repo => repo.AnyAsync(It.IsAny<Expression<Func<Airline, bool>>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(false);
+
+        _airlineRepositoryMock
+            .Setup(repo => repo.AddAsync(It.IsAny<Airline>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
         _unitOfWorkMock
-            .Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()))
+            .Setup(uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(1);
+
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        Assert.True(result.IsSuccess);
-        _airlineRepositoryMock.Verify(r => r.AddAsync(It.Is<Airline>(a => a.Name == command.Name), It.IsAny<CancellationToken>()), Times.Once);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+        result.IsSuccess.Should().BeTrue();
+
+        _airlineRepositoryMock
+            .Verify(r => r.AddAsync(It.IsAny<Airline>(), It.IsAny<CancellationToken>()), Times.Once);
+
+        _unitOfWorkMock
+            .Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 }

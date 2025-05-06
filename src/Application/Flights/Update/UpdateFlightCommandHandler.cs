@@ -24,7 +24,7 @@ public sealed class UpdateFlightCommandHandler(
         if (flight is null)
             return Result.Failure<Guid>(FlightErrors.NotFound(command.Id));
 
-        bool hasReservations = flight.Reservations.Any(r => r.Status == Domain.ReservationStatus.Created 
+        bool hasReservations = flight.Reservations.Any(r => r.Status == Domain.ReservationStatus.Created
             || r.Status == Domain.ReservationStatus.Approved);
 
         flight.UpdateFlight(command, hasReservations);

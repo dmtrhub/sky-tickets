@@ -14,7 +14,7 @@ public class RegisterUserCommandHandler(
 {
     public async Task<Result<Guid>> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
     {
-        if(await userRepository.AnyAsync(u => u.Email == command.Email, cancellationToken))
+        if (await userRepository.AnyAsync(u => u.Email == command.Email, cancellationToken))
             return Result.Failure<Guid>(UserErrors.EmailInUse(command.Email));
 
         var user = command.ToUser(passwordHasher);

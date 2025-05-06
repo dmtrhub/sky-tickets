@@ -1,5 +1,4 @@
-﻿using Application.Abstractions.Data;
-using Application.Abstractions.Messaging;
+﻿using Application.Abstractions.Messaging;
 using Application.Abstractions.Repositories;
 using Domain.Reservations;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +6,7 @@ using SharedKernel;
 
 namespace Application.Reservations.GetById;
 
-public sealed class GetReservationByIdQueryHandler(IRepository<Reservation> reservationRepository) 
+public sealed class GetReservationByIdQueryHandler(IRepository<Reservation> reservationRepository)
     : IQueryHandler<GetReservationByIdQuery, ReservationResponse>
 {
     public async Task<Result<ReservationResponse>> Handle(GetReservationByIdQuery query, CancellationToken cancellationToken)

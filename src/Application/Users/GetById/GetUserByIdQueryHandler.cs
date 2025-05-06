@@ -22,7 +22,7 @@ public sealed class GetUserByIdQueryHandler(IRepository<User> userRepository)
             .Select(u => u.ToUserResponse())
             .FirstOrDefaultAsync(cancellationToken);
 
-        if(user is null)
+        if (user is null)
             return Result.Failure<UserResponse>(UserErrors.NotFound(query.UserId));
 
         return user;

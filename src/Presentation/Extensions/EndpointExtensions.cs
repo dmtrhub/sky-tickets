@@ -1,6 +1,6 @@
-﻿using System.Reflection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+﻿using Microsoft.Extensions.DependencyInjection.Extensions;
 using Presentation.Endpoints;
+using System.Reflection;
 
 namespace Presentation.Extensions;
 

@@ -1,5 +1,4 @@
 ﻿using Application.Reviews;
-using Application.Reviews.GetAll;
 using Application.Reviews.GetById;
 using Infrastructure.Authorization;
 using MediatR;

@@ -1,9 +1,9 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
-using Domain.Reviews;
-using Domain;
-using SharedKernel;
 using Application.Abstractions.Repositories;
+using Domain;
+using Domain.Reviews;
+using SharedKernel;
 
 namespace Application.Reviews.Approve;
 
@@ -22,7 +22,7 @@ public sealed class ApproveReviewCommandHandler(
         if (review.Status != ReviewStatus.Created)
             return Result.Failure<Guid>(ReviewErrors.NotCreated);
 
-        if(command.IsApproved)
+        if (command.IsApproved)
         {
             review.Status = ReviewStatus.Approved;
             review.Raise(new ReviewApprovedDomainEvent(review.Id));

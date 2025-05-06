@@ -1,5 +1,5 @@
-﻿using System.Security.Claims;
-using Microsoft.IdentityModel.JsonWebTokens;
+﻿using Microsoft.IdentityModel.JsonWebTokens;
+using System.Security.Claims;
 
 namespace Infrastructure.Authentication;
 

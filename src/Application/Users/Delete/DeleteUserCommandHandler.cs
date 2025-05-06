@@ -8,7 +8,7 @@ namespace Application.Users.Delete;
 
 public sealed class DeleteUserCommandHandler(
     IRepository<User> userRepository,
-    IUnitOfWork unitOfWork) 
+    IUnitOfWork unitOfWork)
     : ICommandHandler<DeleteUserCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(DeleteUserCommand command, CancellationToken cancellationToken)

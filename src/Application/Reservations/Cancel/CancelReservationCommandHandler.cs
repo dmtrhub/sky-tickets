@@ -25,8 +25,8 @@ public sealed class CancelReservationCommandHandler(
         var reservationQuery = await reservationRepository.AsQueryable();
 
         var reservation = await reservationQuery
-            .Where(r => r.Id == command.Id && r.UserId == userId 
-                && (r.Status == ReservationStatus.Created 
+            .Where(r => r.Id == command.Id && r.UserId == userId
+                && (r.Status == ReservationStatus.Created
                 || r.Status == ReservationStatus.Approved))
             .Include(r => r.Flight)
             .FirstOrDefaultAsync(cancellationToken);

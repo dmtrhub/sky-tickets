@@ -19,7 +19,7 @@ public sealed class GetAllReviewsQueryHandler(IRepository<Review> reviewReposito
             .Select(r => r.ToReviewResponse())
             .ToListAsync(cancellationToken);
 
-        if(reviews.Count == 0)
+        if (reviews.Count == 0)
             return Result.Failure<List<ReviewResponse>>(ReviewErrors.NoReviewsFound);
 
         return reviews;

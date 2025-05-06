@@ -15,7 +15,7 @@ public sealed class DeleteReservationCommandHandler(
     {
         var reservation = await reservationRepository.GetByIdAsync(command.Id, cancellationToken);
 
-        if(reservation is null)
+        if (reservation is null)
             return Result.Failure<Guid>(ReservationErrors.NotFound(command.Id));
 
         reservation.Raise(new ReservationDeletedDomainEvent(reservation.Id));

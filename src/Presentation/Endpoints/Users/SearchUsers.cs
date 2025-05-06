@@ -16,8 +16,8 @@ public sealed class SearchUsers : IEndpoint
             string? firstName,
             string? lastName,
             DateOnly? dateOfBirthFrom,
-            DateOnly? dateOfBirthTo, 
-            ISender sender, 
+            DateOnly? dateOfBirthTo,
+            ISender sender,
             CancellationToken cancellationToken) =>
         {
             var query = new SearchUsersQuery(firstName, lastName, dateOfBirthFrom, dateOfBirthTo);
