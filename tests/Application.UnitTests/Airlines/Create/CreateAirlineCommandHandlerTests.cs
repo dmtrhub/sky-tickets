@@ -12,11 +12,14 @@ public class CreateAirlineCommandHandlerTests
 {
     private readonly Mock<IRepository<Airline>> _airlineRepositoryMock = new();
     private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
+
     private readonly CreateAirlineCommandHandler _handler;
 
     public CreateAirlineCommandHandlerTests()
     {
-        _handler = new CreateAirlineCommandHandler(_airlineRepositoryMock.Object, _unitOfWorkMock.Object);
+        _handler = new CreateAirlineCommandHandler(
+            _airlineRepositoryMock.Object,
+            _unitOfWorkMock.Object);
     }
 
     [Fact]

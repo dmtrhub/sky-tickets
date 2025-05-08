@@ -22,8 +22,12 @@ public static class ReservationMapExtensions
             AirlineName = reservation.Flight.Airline.Name
         };
 
-    public static Reservation ToReservation(this CreateReservationCommand command, Guid userId, decimal totalPrice) =>
-        Reservation.Create(userId, command.FlightId, command.PassengerCount, totalPrice);
+    public static Reservation ToReservation(this CreateReservationCommand command, Guid userId, decimal totalPrice)
+    {
+        var reservation = Reservation.Create(userId, command.FlightId, command.PassengerCount);
+        reservation.TotalPrice = totalPrice;
+        return reservation;
+    }
 
     public static void UpdateReservation(this Reservation reservation, UpdateReservationCommand command)
     {

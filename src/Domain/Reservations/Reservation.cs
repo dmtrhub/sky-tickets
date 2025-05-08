@@ -15,15 +15,14 @@ public sealed class Reservation : Entity
     public decimal TotalPrice { get; set; }
     public ReservationStatus Status { get; set; } = ReservationStatus.Created; // Created, Approved, Canceled, Completed
 
-    public Reservation(Guid userId, Guid flightId, int passengerCount, decimal totalPrice)
+    public Reservation(Guid userId, Guid flightId, int passengerCount)
     {
         Id = Guid.NewGuid();
         UserId = userId;
         FlightId = flightId;
         PassengerCount = passengerCount;
-        TotalPrice = totalPrice;
     }
 
-    public static Reservation Create(Guid userId, Guid flightId, int passengerCount, decimal totalPrice) =>
-        new(userId, flightId, passengerCount, totalPrice);
+    public static Reservation Create(Guid userId, Guid flightId, int passengerCount) =>
+        new(userId, flightId, passengerCount);
 }

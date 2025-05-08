@@ -58,6 +58,8 @@ public static class FlightMapExtensions
 
     public static IQueryable<Flight> SearchFlights(this IQueryable<Flight> flights, SearchActiveFlightsQuery query)
     {
+        flights = flights.Where(f => f.Status == FlightStatus.Active);
+
         if (!string.IsNullOrEmpty(query.Destination))
             flights = flights.Where(f => f.Destination.Contains(query.Destination));
 
@@ -69,8 +71,6 @@ public static class FlightMapExtensions
 
         if (query.MaxPrice.HasValue)
             flights = flights.Where(f => f.Price <= query.MaxPrice.Value);
-
-        flights = flights.Where(f => f.Status == Domain.FlightStatus.Active);
 
         return flights;
     }

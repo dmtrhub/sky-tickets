@@ -4,25 +4,31 @@ using System.Globalization;
 
 namespace Application.Flights.Update;
 
-internal sealed class UpdateFlightCommandValidator : AbstractValidator<UpdateFlightCommand>
+public sealed class UpdateFlightCommandValidator : AbstractValidator<UpdateFlightCommand>
 {
     private const string DateTimeFormat = "yyyy-MM-dd HH:mm";
     public UpdateFlightCommandValidator()
     {
+        RuleFor(x => x.Id)
+            .NotEmpty()
+                .WithMessage("Id is required.");
+
         RuleFor(c => c.DepartureTime)
+            .Cascade(CascadeMode.Stop)
             .Must(BeValidDateTime)
-            .WithMessage($"Departure time must be in format {DateTimeFormat}.")
+                .WithMessage($"Departure time must be in format {DateTimeFormat}.")
             .LessThan(c => c.ArrivalTime)
-            .WithMessage("Departure time must be before arrival time.")
+                .WithMessage("Departure time must be before arrival time.")
             .GreaterThan(DateTime.UtcNow.ToString(DateTimeFormat))
-            .WithMessage("Departure time must be in the future.")
+                .WithMessage("Departure time must be in the future.")
             .When(c => !string.IsNullOrWhiteSpace(c.DepartureTime));
 
         RuleFor(c => c.ArrivalTime)
+            .Cascade(CascadeMode.Stop)
             .Must(BeValidDateTime)
-            .WithMessage($"Arrival time must be in format {DateTimeFormat}.")
+                .WithMessage($"Arrival time must be in format {DateTimeFormat}.")
             .GreaterThan(c => c.DepartureTime)
-            .WithMessage("Arrival time must be after departure time.")
+                .WithMessage("Arrival time must be after departure time.")
             .When(c => !string.IsNullOrWhiteSpace(c.ArrivalTime));
 
         RuleFor(c => c.AvailableSeats)
@@ -39,13 +45,13 @@ internal sealed class UpdateFlightCommandValidator : AbstractValidator<UpdateFli
 
         RuleFor(c => c.Status)
             .Must(BeValidStatus)
-            .WithMessage("Status must be either Active, Canceled or Completed.")
+                .WithMessage("Status must be either Active, Canceled or Completed.")
             .When(c => !string.IsNullOrWhiteSpace(c.Status));
     }
 
-    private bool BeValidDateTime(string? dateTime) =>
+    private static bool BeValidDateTime(string? dateTime) =>
         DateTime.TryParseExact(dateTime, DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out _);
 
-    private bool BeValidStatus(string? status) =>
+    private static bool BeValidStatus(string? status) =>
         Enum.TryParse<FlightStatus>(status, true, out _);
 }

@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Messaging;
 using Application.Abstractions.Repositories;
+using Domain;
 using Domain.Flights;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel;
@@ -11,9 +12,11 @@ public sealed class SearchActiveFlightsQueryHandler(IRepository<Flight> flightRe
 {
     public async Task<Result<List<FlightResponse>>> Handle(SearchActiveFlightsQuery query, CancellationToken cancellationToken)
     {
-        var flightsQuery = await flightRepository.AsQueryable();
+        var flightsQuery = await flightRepository
+            .AsQueryable();
 
         var flights = await flightsQuery
+            .SearchFlights(query)
             .Include(f => f.Airline)
             .Include(f => f.Reservations)
             .ThenInclude(r => r.User)

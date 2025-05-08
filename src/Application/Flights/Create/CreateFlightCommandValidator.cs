@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace Application.Flights.Create;
 
-internal sealed class CreateFlightCommandValidator : AbstractValidator<CreateFlightCommand>
+public sealed class CreateFlightCommandValidator : AbstractValidator<CreateFlightCommand>
 {
     private const string DateTimeFormat = "yyyy-MM-dd HH:mm";
     public CreateFlightCommandValidator()
