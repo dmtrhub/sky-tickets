@@ -2,6 +2,7 @@
 using Application.Abstractions.Repositories;
 using Application.Flights;
 using Application.Flights.Update;
+using Application.UnitTests.Builders;
 using Domain.Flights;
 using Domain.Reservations;
 using FluentAssertions;
@@ -48,13 +49,8 @@ public class UpdateFlightCommandHandlerTests
     public void Should_NotUpdatePrice_When_HasReservations()
     {
         // Arrange
-        var flightId = Guid.NewGuid();
-
-        var reservation = Reservation.Create(Guid.NewGuid(), flightId, 2);
-
         var flight = new FlightBuilder()
-            .WithId(flightId)
-            .WithReservation(reservation)
+            .WithReservation(new ReservationBuilder().Build())
             .Build();
 
         var command = new UpdateFlightCommand(Guid.NewGuid(), "2025-06-01 08:00", "2025-06-01 10:00", 300, 200, 90, "Completed");     
@@ -71,9 +67,7 @@ public class UpdateFlightCommandHandlerTests
     public void Should_UpdatePrice_When_NoReservationsExist()
     {
         // Arrange
-        var flight = new FlightBuilder()
-            .WithId(Guid.NewGuid())
-            .Build();
+        var flight = new FlightBuilder().Build();
 
         var originalPrice = flight.Price;
 

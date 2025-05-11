@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Application.Reservations.Update;
 
-internal sealed class UpdateReservationCommandValidator : AbstractValidator<UpdateReservationCommand>
+public sealed class UpdateReservationCommandValidator : AbstractValidator<UpdateReservationCommand>
 {
     public UpdateReservationCommandValidator()
     {

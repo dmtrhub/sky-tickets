@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Repositories;
 using Application.Flights.GetAll;
+using Application.UnitTests.Builders;
 using Domain;
 using Domain.Flights;
 using Domain.Reservations;
@@ -48,20 +49,13 @@ public class GetAllFlightsQueryHandlerTests
         // Arrange
         var query = new GetAllFlightsQuery();
 
-        var user = User.Create("Test", "User", "test@test.com", "hashed", DateOnly.FromDateTime(DateTime.UtcNow.AddYears(-20)), Gender.Male);
-
-        var flightId1 = Guid.NewGuid();
-        var flightId2 = Guid.NewGuid();
-
         var flights = new List<Flight>()
         {
             new FlightBuilder()
-                .WithId(flightId1)
-                .WithReservation(Reservation.Create(user.Id, flightId1, 25))
+                .WithReservation(new ReservationBuilder().WithPassengerCount(25).Build())
                 .Build(),
             new FlightBuilder()
-                .WithId(flightId2)
-                .WithReservation(Reservation.Create(user.Id, flightId2, 30))
+                .WithReservation(new ReservationBuilder().WithPassengerCount(30).Build())
                 .Build(),
         };
 

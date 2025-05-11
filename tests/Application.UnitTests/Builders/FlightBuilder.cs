@@ -1,13 +1,14 @@
-﻿using Domain.Airlines;
+﻿using Domain;
+using Domain.Airlines;
 using Domain.Flights;
 using Domain.Reservations;
 
-namespace Application.UnitTests.Flights;
+namespace Application.UnitTests.Builders;
 
 public class FlightBuilder
 {
     private Guid _id = Guid.NewGuid();
-    private readonly Airline _airline = Airline.Create("Test Airline", "Test Address", "Test Contact");
+    private readonly Airline _airline = new AirlineBuilder().Build();
     private readonly List<Reservation> _reservations = [];
     private readonly string _departure = "Belgrade";
     private string _destination = "London";
@@ -15,6 +16,7 @@ public class FlightBuilder
     private readonly DateTime _arrivalTime = DateTime.UtcNow.AddDays(7);
     private int _availableSeats = 100;
     private decimal _price = 250;
+    private FlightStatus _status = FlightStatus.Active; // Active, Canceled, Completed
 
     public FlightBuilder WithId(Guid id)
     {
@@ -49,12 +51,19 @@ public class FlightBuilder
     public FlightBuilder WithReservation(Reservation reservation)
     {
         _reservations.Add(reservation);
+        reservation.Flight = this.Build();
         return this;
     }
 
     public FlightBuilder WithNoReservations()
     {
         _reservations.Clear();
+        return this;
+    }
+
+    public FlightBuilder WithStatus(FlightStatus status)
+    {
+        _status = status;
         return this;
     }
 
@@ -76,6 +85,10 @@ public class FlightBuilder
         typeof(Flight)
             .GetProperty(nameof(Flight.Airline))!
             .SetValue(flight, _airline);
+
+        typeof(Flight)
+            .GetProperty(nameof(Flight.Status))!
+            .SetValue(flight, _status);
 
         typeof(Flight)
             .GetProperty(nameof(Flight.Reservations))!

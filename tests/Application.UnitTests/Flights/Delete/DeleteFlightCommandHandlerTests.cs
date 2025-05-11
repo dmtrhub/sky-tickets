@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Repositories;
 using Application.Flights.Delete;
+using Application.UnitTests.Builders;
 using Domain.Flights;
 using Domain.Reservations;
 using FluentAssertions;
@@ -42,18 +43,16 @@ public class DeleteFlightCommandHandlerTests
 
     [Fact]
     public async Task Should_ReturnFailure_When_Flight_Has_Active_Reservations()
-    {
-        var command = new DeleteFlightCommand(Guid.NewGuid());
-
+    {     
         var flight = new FlightBuilder()
-            .WithId(command.Id)
-            .WithReservation(Reservation.Create(
-                Guid.NewGuid(),
-                command.Id,
-                20))
+            .WithReservation(new ReservationBuilder().Build())
             .Build();
 
-        _flightRepositoryMock.Setup(r => r.GetByIdAsync(command.Id, default)).ReturnsAsync(flight);
+        var command = new DeleteFlightCommand(flight.Id);
+
+        _flightRepositoryMock
+            .Setup(r => r.GetByIdAsync(command.Id, default))
+            .ReturnsAsync(flight);
 
         // Act
         var result = await _handler.Handle(command, default);
@@ -65,15 +64,14 @@ public class DeleteFlightCommandHandlerTests
 
     [Fact]
     public async Task Should_Delete_Flight_When_Valid()
-    {
-        var command = new DeleteFlightCommand(Guid.NewGuid());
+    {     
+        var flight = new FlightBuilder().Build();
 
-        var flight = new FlightBuilder()
-            .WithId(command.Id)
-            .WithNoReservations()
-            .Build();
+        var command = new DeleteFlightCommand(flight.Id);
 
-        _flightRepositoryMock.Setup(r => r.GetByIdAsync(command.Id, default)).ReturnsAsync(flight);
+        _flightRepositoryMock.
+            Setup(r => r.GetByIdAsync(command.Id, default))
+            .ReturnsAsync(flight);
 
         // Act
         var result = await _handler.Handle(command, default);

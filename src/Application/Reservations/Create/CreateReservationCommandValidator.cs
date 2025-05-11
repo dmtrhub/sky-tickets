@@ -2,7 +2,7 @@
 
 namespace Application.Reservations.Create;
 
-internal sealed class CreateReservationCommandValidator : AbstractValidator<CreateReservationCommand>
+public sealed class CreateReservationCommandValidator : AbstractValidator<CreateReservationCommand>
 {
     public CreateReservationCommandValidator()
     {

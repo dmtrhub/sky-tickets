@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Repositories;
 using Application.Airlines.SearchAirlines;
+using Application.UnitTests.Builders;
 using Domain.Airlines;
 using FluentAssertions;
 using MockQueryable.Moq;
@@ -15,7 +16,8 @@ public class SearchAirlinesQueryHandlerTests
 
     public SearchAirlinesQueryHandlerTests()
     {
-        _handler = new SearchAirlinesQueryHandler(_airlineRepositoryMock.Object);
+        _handler = new SearchAirlinesQueryHandler(
+            _airlineRepositoryMock.Object);
     }
 
     [Fact]
@@ -44,7 +46,11 @@ public class SearchAirlinesQueryHandlerTests
     public async Task Handle_ShouldReturnSuccess_WhenAirlinesFound()
     {
         // Arrange
-        var airline = Airline.Create("AirSerbia", "Belgrade", "+381");
+        var airline = new AirlineBuilder()
+            .WithName("AirSerbia")
+            .WithAddress("Belgrade")
+            .Build();
+
         var query = new SearchAirlinesQuery("AirSerbia", "Belgrade");
 
         var mockDbSet = new List<Airline> { airline }

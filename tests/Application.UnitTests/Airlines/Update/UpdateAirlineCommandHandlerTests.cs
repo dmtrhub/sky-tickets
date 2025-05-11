@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Repositories;
 using Application.Airlines.Update;
+using Application.UnitTests.Builders;
 using Domain.Airlines;
 using FluentAssertions;
 using Moq;
@@ -16,7 +17,9 @@ public class UpdateAirlineCommandHandlerTests
 
     public UpdateAirlineCommandHandlerTests()
     {
-        _handler = new UpdateAirlineCommandHandler(_airlineRepositoryMock.Object, _unitOfWorkMock.Object);
+        _handler = new UpdateAirlineCommandHandler(
+            _airlineRepositoryMock.Object, 
+            _unitOfWorkMock.Object);
     }
 
     [Fact]
@@ -27,7 +30,7 @@ public class UpdateAirlineCommandHandlerTests
 
         _airlineRepositoryMock
             .Setup(r => r.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync((Airline?)null);  // Simuliramo da avio-kompanija nije pronađena
+            .ReturnsAsync((Airline?)null); 
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
@@ -41,7 +44,9 @@ public class UpdateAirlineCommandHandlerTests
     public async Task Handle_ShouldReturnFailure_WhenAirlineNameIsInUse()
     {
         // Arrange
-        var existingAirline = Airline.Create("ExistingAirline", "ExistingAddress", "ExistingInfo");
+        var existingAirline = new AirlineBuilder()
+            .WithName("ExistingAirline")
+            .Build();
         var command = new UpdateAirlineCommand(existingAirline.Id, "ExistingAirline", "NewAddress", "NewInfo");
 
         _airlineRepositoryMock
@@ -64,7 +69,7 @@ public class UpdateAirlineCommandHandlerTests
     public async Task Handle_ShouldReturnAirlineId_WhenAirlineUpdatedSuccessfully()
     {
         // Arrange
-        var existingAirline = Airline.Create("OldAirline", "OldAddress", "OldInfo");
+        var existingAirline = new AirlineBuilder().Build();
         var command = new UpdateAirlineCommand(existingAirline.Id, "UpdatedAirline", "UpdatedAddress", "UpdatedInfo");
 
         _airlineRepositoryMock

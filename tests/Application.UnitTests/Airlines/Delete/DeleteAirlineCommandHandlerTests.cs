@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions.Data;
 using Application.Abstractions.Repositories;
 using Application.Airlines.Delete;
+using Application.UnitTests.Builders;
 using Domain.Airlines;
 using Domain.Flights;
 using FluentAssertions;
@@ -42,7 +43,7 @@ public class DeleteAirlineCommandHandlerTests
     {
         // Arrange
         var command = new DeleteAirlineCommand(Guid.NewGuid());
-        var airline = Airline.Create("TestAirline", "Address", "Contact");
+        var airline = new AirlineBuilder().Build();
 
         var departureTime = DateTime.Now.AddHours(1);
         var arrivalTime = DateTime.Now.AddHours(3);
@@ -72,7 +73,7 @@ public class DeleteAirlineCommandHandlerTests
     {
         // Arrange
         var command = new DeleteAirlineCommand(Guid.NewGuid());
-        var airline = Airline.Create("TestAirline", "Address", "Contact");
+        var airline = new AirlineBuilder().Build();
         airline.SetId(command.Id); // private set Id
 
         _airlineRepositoryMock

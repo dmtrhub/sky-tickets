@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Repositories;
 using Application.Flights.GetById;
+using Application.UnitTests.Builders;
 using Domain;
 using Domain.Flights;
 using Domain.Reservations;
@@ -46,15 +47,8 @@ public class GetFlightByIdQueryHandlerTests
     public async Task Handle_ShouldReturnFlight_WhenFlightExists()
     {
         // Arrange
-        
-
-        var user = User.Create("Test", "User", "test@test.com", "hashed", DateOnly.FromDateTime(DateTime.UtcNow.AddYears(-20)), Gender.Male);
-
-        var flightId1 = Guid.NewGuid();
-
         var flight = new FlightBuilder()
-                .WithId(flightId1)
-                .WithReservation(Reservation.Create(user.Id, flightId1, 25))
+                .WithReservation(new ReservationBuilder().Build())
                 .Build();
 
         var mockDbSet = new List<Flight> { flight }.AsQueryable().BuildMockDbSet();

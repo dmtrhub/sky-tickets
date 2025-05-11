@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Repositories;
 using Application.Airlines.GetAll;
+using Application.UnitTests.Builders;
 using Domain.Airlines;
 using FluentAssertions;
 using MockQueryable.Moq;
@@ -15,7 +16,8 @@ public class GetAllAirlinesQueryHandlerTests
 
     public GetAllAirlinesQueryHandlerTests()
     {
-        _handler = new GetAllAirlinesQueryHandler(_airlineRepositoryMock.Object);
+        _handler = new GetAllAirlinesQueryHandler(
+            _airlineRepositoryMock.Object);
     }
 
     [Fact]
@@ -41,10 +43,9 @@ public class GetAllAirlinesQueryHandlerTests
     public async Task Handle_ShouldReturnListOfAirlineResponses_WhenAirlinesExist()
     {
         // Arrange
-        var airline = Airline.Create("TestAirline", "TestAddress", "TestInfo");
-        var airlines = new List<Airline> { airline };
+        var airline = new AirlineBuilder().Build();
 
-        var mockDbSet = airlines.AsQueryable().BuildMockDbSet();
+        var mockDbSet = new List<Airline> { airline }.AsQueryable().BuildMockDbSet();
 
         _airlineRepositoryMock.Setup(r => r.AsQueryable())
             .ReturnsAsync(mockDbSet.Object);
@@ -57,6 +58,6 @@ public class GetAllAirlinesQueryHandlerTests
         // Assert
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().ContainSingle();
-        result.Value[0].Name.Should().Be("TestAirline");
+        result.Value[0].Name.Should().Be("Test Airline");
     }
 }

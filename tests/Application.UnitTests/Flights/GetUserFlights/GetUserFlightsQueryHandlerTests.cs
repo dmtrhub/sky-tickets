@@ -1,7 +1,8 @@
 ﻿using Application.Abstractions.Repositories;
 using Application.Flights.GetUserFlights;
+using Application.UnitTests.Builders;
+using Application.UnitTests.Extensions;
 using Domain.Flights;
-using Domain.Reservations;
 using Domain.Users;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -31,20 +32,18 @@ public class GetUserFlightsQueryHandlerTests
     {
         // Arrange
         var userId = Guid.NewGuid();
-        SetUserIdInContext(userId);
+        _httpContextAccessorMock.SetUserId(userId);
 
-        var flightId = Guid.NewGuid();
-        var reservation = Reservation.Create(userId, flightId, 5);
+        var reservation = new ReservationBuilder()
+            .WithPassengerCount(5)
+            .WithUserId(userId)
+            .Build();
 
-        var flights = new List<Flight>
-        {
-            new FlightBuilder()
-                .WithId(flightId)
+        var flight = new FlightBuilder()
                 .WithReservation(reservation)
-                .Build()
-        };
+                .Build();
 
-        var mockDbSet = flights.AsQueryable().BuildMockDbSet();
+        var mockDbSet = new List<Flight> { flight }.AsQueryable().BuildMockDbSet();
 
         _flightRepositoryMock
             .Setup(r => r.AsQueryable())
@@ -64,7 +63,9 @@ public class GetUserFlightsQueryHandlerTests
     public async Task Should_Fail_When_UserIsNotAuthenticated()
     {
         // Arrange
-        _httpContextAccessorMock.Setup(x => x.HttpContext!.User).Returns(new ClaimsPrincipal());
+        _httpContextAccessorMock
+            .Setup(x => x.HttpContext!.User)
+            .Returns(new ClaimsPrincipal());
 
         var query = new GetUserFlightsQuery();
 
@@ -81,11 +82,9 @@ public class GetUserFlightsQueryHandlerTests
     {
         // Arrange
         var userId = Guid.NewGuid();
-        SetUserIdInContext(userId);
+        _httpContextAccessorMock.SetUserId(userId);
 
-        var flights = new List<Flight>();
-
-        var mockDbSet = flights.AsQueryable().BuildMockDbSet();
+        var mockDbSet = new List<Flight>().AsQueryable().BuildMockDbSet();
 
         _flightRepositoryMock
             .Setup(r => r.AsQueryable())
@@ -99,13 +98,5 @@ public class GetUserFlightsQueryHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Error.Code.Should().Be(FlightErrors.NoFlightsFound.Code);
-    }
-
-    private void SetUserIdInContext(Guid userId)
-    {
-        var claims = new List<Claim> { new(ClaimTypes.NameIdentifier, userId.ToString()) };
-        var identity = new ClaimsIdentity(claims);
-        var principal = new ClaimsPrincipal(identity);
-        _httpContextAccessorMock.Setup(x => x.HttpContext!.User).Returns(principal);
     }
 }

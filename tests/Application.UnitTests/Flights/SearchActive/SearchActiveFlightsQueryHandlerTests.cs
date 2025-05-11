@@ -1,6 +1,6 @@
 ﻿using Application.Abstractions.Repositories;
 using Application.Flights.SearchActive;
-using Domain;
+using Application.UnitTests.Builders;
 using Domain.Flights;
 using FluentAssertions;
 using MockQueryable.Moq;
@@ -27,7 +27,6 @@ public class SearchActiveFlightsQueryHandlerTests
         var targetDate = DateTime.UtcNow.AddDays(10).Date;
 
         var matchingFlight = new FlightBuilder()
-            .WithId(Guid.NewGuid())
             .WithDestination("Berlin")
             .WithDepartureTime(targetDate)
             .Build();
@@ -68,7 +67,6 @@ public class SearchActiveFlightsQueryHandlerTests
     {
         // Arrange
         var matchingFlight = new FlightBuilder()
-            .WithId(Guid.NewGuid())
             .WithAvailableSeats(121)
             .WithPrice(195)
             .Build();
@@ -108,14 +106,9 @@ public class SearchActiveFlightsQueryHandlerTests
     public async Task Should_ReturnFailure_When_NoFlightsMatchCriteria()
     {
         // Arrange
-        var flights = new List<Flight>
-        {
-            new FlightBuilder()
-                .WithId(Guid.NewGuid())
-                .Build(),
-        };
+        var flight = new FlightBuilder().Build();
 
-        var mockDbSet = flights.AsQueryable().BuildMockDbSet();
+        var mockDbSet = new List<Flight> { flight }.AsQueryable().BuildMockDbSet();
 
         _flightRepositoryMock
             .Setup(r => r.AsQueryable())
