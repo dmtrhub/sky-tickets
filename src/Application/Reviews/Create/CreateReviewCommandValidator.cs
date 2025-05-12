@@ -2,7 +2,7 @@
 
 namespace Application.Reviews.Create;
 
-internal sealed class CreateReviewCommandValidator : AbstractValidator<CreateReviewCommand>
+public sealed class CreateReviewCommandValidator : AbstractValidator<CreateReviewCommand>
 {
     public CreateReviewCommandValidator()
     {

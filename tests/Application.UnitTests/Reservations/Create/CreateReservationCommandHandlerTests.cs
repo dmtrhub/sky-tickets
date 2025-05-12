@@ -81,7 +81,7 @@ public class CreateReservationCommandHandlerTests
 
         _userRepositoryMock
             .Setup(x => x.GetByIdAsync(userId, default))
-            .ReturnsAsync(new UserBuilder().Build());
+            .ReturnsAsync(new UserBuilder().WithId(userId).Build());
 
         var flightId = Guid.NewGuid();
 
@@ -109,7 +109,7 @@ public class CreateReservationCommandHandlerTests
 
         _userRepositoryMock
             .Setup(x => x.GetByIdAsync(userId, default))
-            .ReturnsAsync(new UserBuilder().Build());
+            .ReturnsAsync(new UserBuilder().WithId(userId).Build());
 
         var flight = new FlightBuilder()
                         .WithStatus(FlightStatus.Canceled)

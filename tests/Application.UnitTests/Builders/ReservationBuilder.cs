@@ -26,6 +26,12 @@ public class ReservationBuilder
         return this;
     }
 
+    public ReservationBuilder WithFlightId(Guid flightId)
+    {
+        _flight.Id = flightId;
+        return this;
+    }
+
     public ReservationBuilder WithFlight(Flight flight)
     {
         _flight = flight;
@@ -50,6 +56,9 @@ public class ReservationBuilder
             userId: _user.Id, 
             flightId: _flight.Id, 
             passengerCount: _passengerCount);
+
+        _user.Reservations.Add(reservation);
+        _flight.Reservations.Add(reservation);
 
         typeof(Reservation)
             .GetProperty(nameof(Reservation.Id))

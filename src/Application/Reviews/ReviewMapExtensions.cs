@@ -24,8 +24,8 @@ public static class ReviewMapExtensions
 
     public static void UpdateReview(this Review review, UpdateReviewCommand command)
     {
-        review.Title = command.Title;
-        review.Content = command.Content;
+        review.Title = command.Title!;
+        review.Content = command.Content!;
         review.ImageUrl = command.ImageUrl;
     }
 }

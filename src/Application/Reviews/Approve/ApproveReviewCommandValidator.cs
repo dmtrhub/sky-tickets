@@ -2,7 +2,7 @@
 
 namespace Application.Reviews.Approve;
 
-internal sealed class ApproveReviewCommandValidator : AbstractValidator<ApproveReviewCommand>
+public sealed class ApproveReviewCommandValidator : AbstractValidator<ApproveReviewCommand>
 {
     public ApproveReviewCommandValidator()
     {
